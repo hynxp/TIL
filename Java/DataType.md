@@ -4,6 +4,8 @@
 > <br>
 >그렇지 않고 바로 초기화가 가능한 것을 **기본 자료형**이라고 한다.
 
+<br>
+
 딱 하나 예외가 있다.
 바로 **String**!
 
@@ -12,7 +14,7 @@ String은 두 가지 방법으로 초기화 가능하다.
 - String str = “String”;
 - String str = new String(”String”);
 
-기본 자료형
+## 💡기본 자료형
 
 1. 숫자
     1. 정수형 : byte, short, int, long, char
@@ -21,8 +23,9 @@ String은 두 가지 방법으로 초기화 가능하다.
 
 ![image](https://github.com/kyunghyun-Park/TIL/assets/50633008/29d13569-2091-4647-a6de-e92c6cea486d)
 
-### 💡byte 연산
-***
+<br>
+
+## 💡byte 연산
 
 ```java
 byte byteMin = -128;
@@ -41,8 +44,9 @@ byteMin을 2진수로 표현하면 1000_0000인데 여기서 -1 하면 0111_1111
 
 byteMax값 0111_1111에서 1을 더하면 1000_0000이 되기 때문이다.
 
-### 💡변수의 초기화
-***
+<br>
+
+## 💡변수의 초기화
 
 자바의 모든 자료형은 값을 지정하지 않으면 기본값을 사용한다.
 
