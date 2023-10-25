@@ -6,3 +6,8 @@
 ## Java
 * [기본 자료형과 참조 자료형](https://github.com/kyunghyun-Park/TIL/blob/main/Java/DataType.md)
 * JVM 구조와 동작 과정
+
+<br>
+
+## JavaScript
+* [브라우저의 전역 변수 충돌 문제를 회피하는 방법](https://github.com/kyunghyun-Park/TIL/blob/main/JavaScript/scope.md)
