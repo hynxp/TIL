@@ -11,3 +11,9 @@
 
 ## JavaScript
 * [브라우저의 전역 변수 충돌 문제를 회피하는 방법](https://github.com/kyunghyun-Park/TIL/blob/main/JavaScript/scope.md)
+
+<br>
+
+## 테스트 코드
+* [테스트 코드란](https://github.com/kyunghyun-Park/TIL/blob/main/TestCode/applicationProperties.md)
+* [테스트 코드 수행 시 application.properties](https://github.com/kyunghyun-Park/TIL/blob/main/TestCode/applicationProperties.md)
