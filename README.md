@@ -8,6 +8,7 @@
 * JVM 구조와 동작 과정
 * [static 블록](https://github.com/kyunghyun-Park/TIL/blob/main/Java/staticBlock.md)
 * [상속 시 조심해야 할 생성자](https://github.com/kyunghyun-Park/TIL/blob/main/Java/inheritanceAndConstructor.md)
+* [==와 equals()](https://github.com/kyunghyun-Park/TIL/blob/main/Java/%3D%3Dandequals.md)
 
 <br>
 
