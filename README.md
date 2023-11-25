@@ -20,3 +20,8 @@
 ## 테스트 코드
 * [테스트 코드란](https://github.com/kyunghyun-Park/TIL/blob/main/TestCode/applicationProperties.md)
 * [테스트 코드 수행 시 application.properties](https://github.com/kyunghyun-Park/TIL/blob/main/TestCode/applicationProperties.md)
+
+<br>
+
+## JPA
+* [변경감지와 병합](https://github.com/kyunghyun-Park/TIL/blob/main/JPA/dirtychecking_merge.md)
