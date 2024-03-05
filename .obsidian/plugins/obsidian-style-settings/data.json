@@ -1,0 +1,16 @@
+{
+  "minimal-style@@h1-size": "1.5em",
+  "minimal-style@@h2-size": "1.3em",
+  "minimal-style@@h2-l": true,
+  "minimal-style@@h1-l": true,
+  "minimal-style@@minimal-code-scroll": false,
+  "minimal-style@@code-keyword@@light": "#CC7832",
+  "minimal-style@@code-tag@@light": "#629755",
+  "minimal-style@@code-function@@light": "#5A5C5E",
+  "minimal-style@@code-string@@light": "#6A8759",
+  "minimal-style@@code-comment@@light": "#629755",
+  "minimal-style@@code-normal@@light": "#5A5C5E",
+  "minimal-style@@code-operator@@light": "#A9B7C6",
+  "minimal-style@@code-property@@light": "#5A5C5E",
+  "minimal-style@@code-value@@light": "#5A5C5E"
+}

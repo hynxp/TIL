@@ -36,7 +36,10 @@
   "showRibbon": true,
   "deleteFileOption": "trash",
   "expandedSpaces": [
-    "/"
+    "/",
+    "Spaces/Home/Spaces/Home/Docker",
+    "Spaces/Home/Spaces/Home/Docker",
+    "Spaces/Home/Spaces/Home/Java"
   ],
   "expandFolderOnClick": true,
   "menuTriggerChar": "/",

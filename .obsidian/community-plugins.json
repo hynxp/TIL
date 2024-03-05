@@ -1,4 +1,6 @@
 [
   "obsidian-git",
-  "make-md"
+  "make-md",
+  "obsidian-minimal-settings",
+  "obsidian-style-settings"
 ]
