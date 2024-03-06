@@ -39,7 +39,7 @@ COPY ./hello-world.war /usr/local/tomcat/webapps
 -> tomcat:9.0 이미지를 기반으로 하고,  
 루트 디렉토리 밑에 hello-word.war 파일을 /usr/local/tomcat/webapps로 복사해라
 
-**이미지 빌드 명령어(Container 내에서 테스트)**  **
+**이미지 빌드 명령어(Container 내에서 테스트)**
 `docker build --tag docker-server -f Dockerfile .`
 
 **컨테이너 실행 명령어 (Container 내에서 테스트)**  

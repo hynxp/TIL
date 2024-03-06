@@ -13,7 +13,7 @@
             "state": {
               "type": "diff-view",
               "state": {
-                "file": "Spaces/Home/Docker/Docker.md",
+                "file": ".obsidian/plugins/obsidian-admonition/styles.css",
                 "staged": false
               }
             }
@@ -47,7 +47,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "네트워크",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -160,13 +160,19 @@
   },
   "active": "9eb5affd00150b12",
   "lastOpenFiles": [
+    "Spaces/Home/Docker/sec3. Ansible 연동.md",
+    "images/Pasted image 20240306112926.png",
+    "images/Pasted image 20240306112923.png",
+    "Spaces/Home/Docker/sec2. Jenkins 사용.md",
+    "Spaces/Home/Docker/헷갈리는 것.md",
+    "images/Pasted image 20240306111524.png",
+    "images/Pasted image 20240306111443.png",
     "Spaces/Home/Docker/sec1. CI-CD란.md",
+    "Spaces/Home/Docker/왜.md",
     "Spaces/Home/Java/inheritanceAndConstructor.md",
     "Spaces/Home/Java/staticBlock.md",
     "Spaces/Home/Java/DataType.md",
     "Spaces/Home/Docker/Docker.md",
-    "Spaces/Home/Docker/sec2. Jenkins 사용.md",
-    "Spaces/Home/Docker/sec3. Ansible 연동.md",
     "Spaces/Home/Docker/sec2.md",
     "images/sec3-20240305112647002.webp",
     "images/sec2-20240305111004424.webp",

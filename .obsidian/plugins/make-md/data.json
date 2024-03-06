@@ -39,7 +39,8 @@
     "/",
     "Spaces/Home/Spaces/Home/Docker",
     "Spaces/Home/Spaces/Home/Docker",
-    "Spaces/Home/Spaces/Home/Java"
+    "Spaces/Home/Spaces/Home/Java",
+    "Spaces/Home/Spaces/Home/Docker"
   ],
   "expandFolderOnClick": true,
   "menuTriggerChar": "/",

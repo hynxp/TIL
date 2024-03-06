@@ -11,7 +11,7 @@
 `docker run -d -v jenkins_home:/var/jenkins_home -p 8080:8080 -p 50000:50000 --restart=on-failure jenkins/jenkins:lts-jdk17--name`
 
 이름을 설정하는 것  
-`docker run -d -v jenkins_home:/var/jenkins_home -p 8080:8080 -p 50000:50000 --restart=on-failure --name jenkins-server jenkins/jenkins:lts-jdk17``docker ps`  
+`docker run -d -v jenkins_home:/var/jenkins_home -p 8080:8080 -p 50000:50000 --restart=on-failure --name jenkins-server jenkins/jenkins:lts-jdk17` 
 
 프로세스 정상 작동 확인
 `docker exec -it jenkins-server(컨테이너명) bash`  
