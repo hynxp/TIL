@@ -1,48 +1,84 @@
 # 구조
 ![[sec3-20240305112647002.webp]]
-**도커 네트워크 브릿지 확인**  
-`docker network inspect bridge`
+## 도커 네트워크 브릿지 확인
+`# docker network inspect bridge`
+```shell
+{
+	"Name": "bridge",
+	"Containers": {
+		"4d75fd0cb848eb6a23ae1736e203ae8fcd0dff310e2d79e33c206494e943bb0a": {
+			"Name": "jenkins-server",
+			"EndpointID": "d391074675fdd5f1004e8cdb902f90812d5ae845814c952374e59da3bb153e34",
+			"MacAddress": "02:42:ac:11:00:03",
+			"IPv4Address": "172.17.0.3/16",
+			"IPv6Address": ""
+		},
+		"cdbb2a5b48bef63161026dcc5f68ab83696e1b99add1aa0c579048ce820c236d": {
+			"Name": "docker-server",
+			"EndpointID": "9eac29f8f8a99c0166c5dde6fb2dc6db1a9a2143d19f942d6e5a56ebcd93231f",
+			"MacAddress": "02:42:ac:11:00:04",
+			"IPv4Address": "172.17.0.4/16",
+			"IPv6Address": ""
+		},
+		"ea3a4e776da2ee2fbc40bd82904109383311bc825a4da32827a0e9fa2a80ba36": {
+			"Name": "ansible-server",
+			"EndpointID": "75aff57b17699eff97d05c959c4327bfd981f7259fe58923b0cd9f6e5ccd5974",
+			"MacAddress": "02:42:ac:11:00:02",
+			"IPv4Address": "172.17.0.2/16",
+			"IPv6Address": ""
+		}
+}
+```
+## host PC -> 각 컨테이너 접속
+`# ssh root@localhost -p 20022`  
+`# ssh root@localhost -p 10022`
 
-**host PC에서 각 도커에 접속할 때는 아래처럼 접속**  
-`ssh root@localhost -p 20022`  
-`ssh root@localhost -p 10022`
+## 컨테이너 -> 컨테이너 간 접속
+`# ssh root@172.17.0.2`  
+`# ssh root@172.17.0.4`
 
-**도커 컨테이너 안에서 다른 컨테이너로 접속할 때**
-`ssh root@172.17.0.2`  
-`ssh root@172.17.0.4`
+### ssh 키 등록
+컨테이너 간의 접속 시 계속 패스워드를 치면 번거로우니 ssh키를 생성해서 접속하고자 하는 서버에 전달하면 패스워드 입력 없이 바로 접속이 가능하다
+`#  ssh-keygen`
+`# ssh-copy-id root@172.17.0.4`(접속할 서버 IP)
 
-**ssh 키 등록**
-ansible 서버에서 docker 서버로 접속할 때 계속 비밀번호를 치면 번거로우니
-ssh키를 생성해서 docker서버에 전달하면 바로 접속이 가능하다
-`ssh-keygen`
-`ssh-copy-id root@172.17.0.4`(접속할 서버 IP)
-
-## 기본 명령어
-`-i (--inventory-file)`
+# Ansible 기본 명령어
+### -i (--inventory-file)
 적용 될 호스트들에 대한 파일 정보
-`-m (--module-name)`
+###  -m (--module-name)
 모듈 선택
-`-k (--ask-pass)`
+### -k (--ask-pass)
 관리자 암호 요청
-`-K (--ask-become-pass)`
+### -K (--ask-become-pass)
 관리자 권한 상승
-`--list-hosts` 
+### --list-hosts
 적용되는 호스트 목록
 
-Ansible은 멱등성을 보장한다
--> 같은 설정을 여러 번 적용하더라고 결과가 달라지지 않는다. (한 번만 적용된다)
+```ad-note
+title: Ansible은 멱등성을 보장한다.
+같은 설정을 여러 번 실행하더라고도 동일한 결과를 얻는다는 의미다.
 
-# 모듈 사용
+💡 **항상 멱등성이 보장되는가?**
+No! **command** 모듈은 명령어를 무조건 실행하기 때문에 결과가 달라질 수 있다.
+-> command 모듈은 실행 결과가 항상 changed로 나온다.
+```
+
+# Ansible 모듈 사용
 [모듈 목록](https://docs.ansible.com/ansible/2.9/modules/list_of_all_modules.html)
 
-- **접속 확인**
- `ansible all -m ping`
- `ansible devops -m ping`
-all -> hosts 파일에 있는 대상 전체 다
+## ping - 접속 확인 모듈
+### 명령어
+ `# ansible all -m ping`
+ `# ansible devops -m ping`
+ ```ad-note
+ all -> hosts 파일에 있는 대상 전체 다
 devops -> hosts 파일에 있는 그룹명
 -m -> 모듈 사용
 ping -> ping이라는 모듈을 사용한다.
-```json
+```
+
+### 결과
+```shell
 172.17.0.2 | SUCCESS => {
     "ansible_facts": {
         "discovered_interpreter_python": "/usr/libexec/platform-python"
@@ -59,10 +95,12 @@ ping -> ping이라는 모듈을 사용한다.
 }
 ```
 
-- **메모리 사용량 정보 반환**
-`ansible all -m shell -a "free -h"`
+## shell - 메모리 사용량 정보 반환 모듈
+### 명령어
+`# ansible all -m shell -a "free -h"`
+
+### 결과
 ```shell
-[root@ea3a4e776da2 ~]# ansible all -m shell -a "free -h"
 172.17.0.2 | CHANGED | rc=0 >>
 total        used        free      shared  buff/cache   available
 Mem:           15Gi       1.8Gi       9.6Gi        30Mi       4.1Gi        13Gi
@@ -73,14 +111,17 @@ Mem:           15Gi       1.8Gi       9.6Gi        30Mi       4.1Gi        13Gi
 Swap:         4.0Gi          0B       4.0Gi
 ```
 
-- **패키지 설치**
-`ansible devops -m yum -a "name=httpd state=present"`
+## yum - 패키지 설치 모듈
+### 명령어
+`# ansible devops -m yum -a "name=httpd state=present"`
 
 # Playbook 사용하기
 모듈에 대한 명령어를 작성해놓고 한꺼번에 실행할 수 있다.
 
-- **blockinfile 모듈 사용** (마커 선으로 둘러싸인 여러 줄의 텍스트 블록 삽입)
-1. first-playbook.yml 생성
+## 예제1 - blockinfile 모듈 사용
+마커 선으로 둘러싸인 여러 줄의 텍스트 블록 삽입하는 모듈이다.
+
+**yml 예제**
 ```yml
 ---
   - name: Add an ansible hosts
@@ -93,9 +134,14 @@ Swap:         4.0Gi          0B       4.0Gi
             [mygroup]
             172.17.0.5
 ```
-2. `# ansible-playbook first-playbook.yml` 실행
+
+**playbook 명령어 실행**
+ `# ansible-playbook first-playbook.yml`
+ 
+**결과**
+hosts 파일에 block: 아래에 적은 텍스트가 삽입된 것을 확인할 수 있다.
 ```shell
-[root@ea3a4e776da2 ~]# cat /etc/ansible/hosts 
+# cat /etc/ansible/hosts 
 [devops]
 172.17.0.2 
 172.17.0.4
@@ -105,10 +151,14 @@ Swap:         4.0Gi          0B       4.0Gi
 # END ANSIBLE MANAGED BLOCK
 ```
 
-2번 과정을 한 번 더 한다고 해도 host가 또 추가되지 않는다.
+💡 2번 과정을 한 번 더 한다고 해도 host가 또 추가되지 않는다.
 아까 말했던 **멱등성**때문이다!!! 
 
-- **copy 모듈 사용**(파일 복사)
+
+## 예제2 - copy 모듈 사용
+파일을 복사하는 모듈이다.
+
+**yml 예제**
 ```yml
 - name: Ansible Copy Example Local to Remtoe 
   hosts: devops
@@ -121,27 +171,30 @@ Swap:         4.0Gi          0B       4.0Gi
         mode: 0644
 ```
 
-- **file, get_url 모듈 사용**(url을 가져와서 파일 다운로드)
+
+## 예제3 - file, get_url 모듈 사용
+파일 다운로드 url을 가져와서 파일 다운로드 해보자
+
 ```yml
 ---
-- name: Download Tomcat9 from tomcat.apache.org
+- name: tomcat.apache.org에서 Tomcat9 다운로드 해보기
   hosts: all
   #become: yes
   # become_user: root
   tasks:
-   - name: Create a Directory /opt/tomcat9
+   - name: /opt/tomcat9 디렉토리 생성 
      file:
        path: /opt/tomcat9
        state: directory
        mode: 0755
-   - name: Download the Tomcat checksum
+   - name: Tomcat checksum 다운로드
      get_url:
        url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.86/bin/apache-tomcat-9.0.86.tar.gz.sha512
        dest: /opt/tomcat9/apache-tomcat-9.0.86.tar.gz.sha512
-   - name: Register the checksum value
+   - name: checksum value 등록
      shell: cat /opt/tomcat9/apache-tomcat-9.0.86.tar.gz.sha512 | grep apache-tomcat-9.0.86.tar.gz | awk '{ print $1 }'
      register: tomcat_checksum_value
-   - name: Download Tomcat using get_url
+   - name: get_url을 사용하여 tomcat9 다운로드
      get_url:
        url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.86/bin/apache-tomcat-9.0.86.tar.gz
        dest: /opt/tomcat9
@@ -151,9 +204,9 @@ Swap:         4.0Gi          0B       4.0Gi
 
 # Jenkins + Playbook 사용하기
 
-```ad-question
-title: playbook.yml
-~~~shell
+```ad-note
+title: first-devops-playbook.yml
+~~~yml
 - hosts: all
 #   become: true  
 
@@ -178,20 +231,18 @@ title: playbook.yml
 ```
 
 
---- 
-
-1. **Jenkins 관리 설정**
-SSH Server에 ansible-server 등록
+## 1.Jenkins에 SSH 서버 등록
+Jenkins 관리 - SSH Server에 ansible-server 등록
 ![[Pasted image 20240306111524.png|250]]
 
-2.  **프로젝트 설정**
-해당 프로젝트 빌드 후 조치에 war 파일이 빌드되면 ansible-server에서 ansible-playbook.yml에 등록한 명령어가 자동 실행되도록 설정한다.
+## 2.  프로젝트 설정
+해당 프로젝트 **빌드 후 조치**에 war 파일이 빌드되면 ansible-server에서 ansible-playbook.yml에 등록한 명령어가 자동 실행되도록 설정한다.
 ![[Pasted image 20240306111443.png|250]]
 
-3. **localhost:8082로 접속해서 확인**
+## 3. localhost:8082로 접속해서 확인
 ![[Pasted image 20240306112926.png|250]]
 
----
+## + 기존 컨테이너 중지, 삭제 명령어 추가
 이 상태에서 같은 이름의 컨테이너가 이미 존재하면 UNSTABLE 에러가 발생하기 때문에 
 playbook 파일에서 **기존에 컨테이너가 존재하면 중지하고 삭제**하는 명령어를 추가한다.
 
@@ -221,12 +272,9 @@ playbook 파일에서 **기존에 컨테이너가 존재하면 중지하고 삭�
     command: docker run -d --name my_cicd_project -p 8080:8080 cicd-project-ansible
 ```
 
-# Docker 이미지 관리
+# Docker Hub에 등록한 이미지로 컨테이너 실행해보기
 ````ad-note
-**이미지 이름 변경**
-`# docker tag cicd-project-ansible hynxp/cicd-project-ansible`
-
-** Dockerfile **
+title: Dockerfile
 ```
 FROM tomcat:9.0
 
@@ -236,15 +284,17 @@ COPY ./hello-world.war /usr/local/tomcat/webapps
 ```
 ````
 
-### ⭐ansible-server에서 해야 할 작업
-1. **hosts 파일에 docker-server ip 추가하기**
+💡 아래 작업은 Ansible Server에서 해야 한다.
+
+### 1. hosts 파일에 docker-server ip 추가
 ```
-172.17.0.2 <- ansible-server
+172.17.0.2 <- 
 172.17.0.4 <- docker-server
 ```
 
-2. **이미지 생성 yml 생성하기**
-```shell
+### 2. 이미지 생성  + Docker Hub에 push하는 yml 생성
+Dockerfile로 이미지를 생성하고, Docker Hub에 push한 뒤에 생성한 이미지를 삭제한다.
+```yml
 - hosts: all
 #   become: true
 
@@ -262,8 +312,10 @@ COPY ./hello-world.war /usr/local/tomcat/webapps
     ignore_errors: yes
 ```
 
-3. **컨테이너 생성 yml 생성하기**
-```shell
+### 3. Docker Hub에서 pull + 컨테이너 생성하는 yml 생성
+기존에 동일한 이름으로 실행 중인 컨테이너가 있으면 중지, 삭제하고
+2번 과정에서 새롭게 push된 이미지를 pull한 다음 컨테이너를 생성한다.
+```yml
 - hosts: all
 #   become: true  
 
@@ -288,17 +340,17 @@ COPY ./hello-world.war /usr/local/tomcat/webapps
 
 ```
 
-4. **Dockerfile 기반으로 이미지 생성 후 Docker Hub에 push하기**
+### 4. Jenkins에서 playbook 명령어 실행
+Jenkins에서 빌드가 완료되면 2, 3번의 yml파일을 자동으로 실행하도록 설정하자.
+![[Pasted image 20240306155926.png|250]]
 `# ansible-playbook -i hosts create-cicd-devops-image.yml --limit 172.17.0.4`
+`# ansible-playbook -i hosts create-cicd-devops-container.yml --limit 172.17.0.2`
 --limit는 hosts파일 중에 이 ip에게만 playbook을 실행시키겠다는 뜻이다.
 
-5. **다른 컨테이너에 Docker Hub에 push한 이미지를 기반으로 컨테이너 생성하기**
-`# ansible-playbook -i hosts create-cicd-devops-container.yml --limit 172.17.0.2`
-
 ```ad-summary
+title: 요약
 1. ansible이 설치된 컨테이너에 명령어를 yml로 만든다.
 2. 다른 컨테이너들의 정보가 담긴 hosts파일을 생성한다.
 3. ansible-playbook 명령어로로 쉘 스크립트 실행시키듯이 컨테이너들을 조종한다!
 4. 3번 과정을 **Jenkins 빌드 후 조치에 Exec command**에 입력하면 자동화할 수 있다.
-![[Pasted image 20240306155926.png|250]]
 ```
