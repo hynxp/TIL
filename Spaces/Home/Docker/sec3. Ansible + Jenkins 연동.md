@@ -1,5 +1,5 @@
 # 구조
-![[sec3-20240305112647002.webp]]
+![[sec3_1.webp]]
 ## 도커 네트워크 브릿지 확인
 `# docker network inspect bridge`
 ```shell
@@ -233,14 +233,14 @@ title: first-devops-playbook.yml
 
 ## 1.Jenkins에 SSH 서버 등록
 Jenkins 관리 - SSH Server에 ansible-server 등록
-![[Pasted image 20240306111524.png|250]]
+![[sec3_2.png|250]]
 
 ## 2.  프로젝트 설정
 해당 프로젝트 **빌드 후 조치**에 war 파일이 빌드되면 ansible-server에서 ansible-playbook.yml에 등록한 명령어가 자동 실행되도록 설정한다.
-![[Pasted image 20240306111443.png|250]]
+![[sec3_3.png|250]]
 
 ## 3. localhost:8082로 접속해서 확인
-![[Pasted image 20240306112926.png|250]]
+![[sec3_4.png|250]]
 
 ## + 기존 컨테이너 중지, 삭제 명령어 추가
 이 상태에서 같은 이름의 컨테이너가 이미 존재하면 UNSTABLE 에러가 발생하기 때문에 
@@ -342,7 +342,7 @@ Dockerfile로 이미지를 생성하고, Docker Hub에 push한 뒤에 생성한 
 
 ### 4. Jenkins에서 playbook 명령어 실행
 Jenkins에서 빌드가 완료되면 2, 3번의 yml파일을 자동으로 실행하도록 설정하자.
-![[Pasted image 20240306155926.png|250]]
+![[sec3_5.png|250]]
 `# ansible-playbook -i hosts create-cicd-devops-image.yml --limit 172.17.0.4`
 `# ansible-playbook -i hosts create-cicd-devops-container.yml --limit 172.17.0.2`
 --limit는 hosts파일 중에 이 ip에게만 playbook을 실행시키겠다는 뜻이다.

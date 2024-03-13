@@ -32,7 +32,7 @@ O ^5C1bIFlB
 
 
 # Embedded files
-84d5f24514135f5a212e049bbb3b2c5062ed7796: [[Pasted Image 20240306143159_785.png]]
+84d5f24514135f5a212e049bbb3b2c5062ed7796: [[docker_logo.png]]
 
 %%
 # Drawing

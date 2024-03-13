@@ -14,7 +14,7 @@
 
 # docker ps - 프로세스 정상 작동 확인 명령어
 `# docker ps`
-![[Pasted image 20240305105515.png]]
+![[sec1_1.png]]
 ```ad-note
 title: 8080:8080과 50000:50000이 무슨 뜻인가?
 0.0.0.0:8080->8080/tcp  
@@ -25,4 +25,4 @@ title: 8080:8080과 50000:50000이 무슨 뜻인가?
 
 # docker exec - 도커 컨테이너 내부 접속 명령어
 `# docker exec -it jenkins-server(컨테이너명) bash`  
-![[Pasted image 20240307095458.png]]
+![[sec1_2.png]]

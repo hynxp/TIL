@@ -5,7 +5,7 @@
 
 위 구조에서 Jenkins 빌드 후 조치 - Deploy war/ear to a container에서 war파일을 톰캣으로 배포하고 싶을 때 Tomcat URL을 localhost:8088 or http://127.0.0.1:8088/로 입력하면 안된다!
 
-![[sec2-20240305110226782.webp|200]]
+![[sec2_2.webp|200]]
 
 ```ad-question
 title: 왜?
@@ -24,7 +24,7 @@ Jenkins에서는 이 경로 자체를 자신이 가지고 있는 경로로 접�
 # 도커 내에 SSH 도커 컨테이너 구축
 
 ## 구조
-![[sec2-20240305110918388.webp]]
+![[sec2_3.webp]]
 Password: **_P@ssw0rd_**
 
 ## SSH 접속 및 Jenkins와 SSH 서버 연동
@@ -32,7 +32,7 @@ Password: **_P@ssw0rd_**
 `ssh root@localhost -p 10022` 
 
 ## Jenkins에 SSH 서버 등록
-![[sec2-20240305111004424.webp]]
+![[sec2_4.webp]]
 ### Hostname
 젠킨스 내에 SSH 설정 입력할 때도 localhost를 입력하면 안 된다.  
 localhost자체가 루프백(본인을 가리킴)하기 때문에 젠킨스 내에 10022번 포트는 없으므로  본인 IP를 입력해야 함!
