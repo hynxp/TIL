@@ -51,6 +51,7 @@ deployment를 만들면 sample-nginx의 pod가 1개 생성된다.
 
 # 예제1 - yml파일로 deployments, pod 생성
 
+### 1. **yml파일 작성**
 **sample1.yml**
 ```yml
 apiVersion: apps/v1
@@ -77,11 +78,12 @@ spec:
         
 ```
 
+### 2. **명령어 실행**
 `kubectl apply -f sample1.yml`을 실행하면 replicas가 2개인 nginx-deployment가 생성된다.
 ![[sec4_2.png]]
-# 예제2 - Ansible로 kubenetes script 실행하기
+# 예제2 - Ansible로 kubenetes script 실행
 
-1. **도커 이미지를 사용해 deployment생성하는 yml파일 작성(Host PC)**
+### 1. **도커 이미지를 사용해 deployment생성하는 yml파일 작성(Host PC)**
 
 **cicd-devops-deployment.yml**
 ```yml
@@ -109,7 +111,7 @@ spec:
         
 ```
 
-2. **service 생성하는 yml파일 작성(Host PC)**
+### 2. **service 생성하는 yml파일 작성(Host PC)**
 
 **cicd-devops-service.yml**
 ```yml
@@ -130,7 +132,7 @@ spec:
       
 ```
 
-3. **위 yml파일을 실행하는 playbook yml 스크립트 작성(ansible-server)**
+### 3. **위 yml파일을 실행하는 playbook yml 스크립트 작성(ansible-server)**
 
 **k8s-cicd-deployment-playbook.yml**
 기존에 cicd-deployment를 삭제하고 2번의 yml을 실행하라는 스크립트
@@ -143,6 +145,7 @@ spec:
   tasks:
   - name: delete the previous deployment
     win_command: kubectl delete deployment.apps/cicd-deployment
+    ignore_errors: yes
 
   - name: create a deployment
     win_command: kubectl apply -f C:\Users/박경현_인터넷망\Downloads\cicd-devops-deployment.yml
@@ -161,24 +164,24 @@ spec:
     win_command: kubectl apply -f C:\Users/박경현_인터넷망\Downloads\cicd-devops-service.yml
 ```
 
-4. **ansible-playbook으로 스크립트 실행**
+### 4. **ansible-playbook으로 스크립트 실행**
 `# ansible-playbook -i ./k8s/hosts k8s-cicd-deployment-playbook.yml`
 `# ansible-playbook -i ./k8s/hosts k8s-cicd-service-playbook.yml`
 
-# 예시3 - Jenkins + Ansible + Kubernetes 연동
+# 예제3 - Jenkins + Ansible + Kubernetes 연동
 예시2번 과정에서 ansible-playbook 명령어를 직접 치지 않고 jenkins를 사용해 실행해보자
 
-1. **Jenkins 관리 - SSH Server 등록**
+### 1. **Jenkins 관리 - SSH Server 등록**
 k8s가 설치되어있는 서버를 새로 등록한다.
 - username, password는 윈도우 계정 입력
 
 ![[sec4_3.png]]
 
-2. **Item 생성**
+### 2. **Item 생성**
 빌드 후 커맨드에 ansible-playbook 명령어를 등록한다.
 ![[sec4_4.png]]
 
-3. **배포 확인**
+### 3. **배포 확인**
 빌드가 완료되면 pods, deployments, service가 생성된 것을 확인할 수 있다.
 ```bash
 hyun@DESKTOP-1S2IB77 C:\Users\박경현_인터넷망>kubectl get all
@@ -199,3 +202,80 @@ replicaset.apps/cicd-deployment-5b5795dcf7   2         2         2       29s
 
 service 포트인 localhost:32000에 접속하면 정상적으로 배포된 것을 확인할 수 있다.
 ![[sec4_5.png]]
+# 예제4 - CI/CD 자동화 파이프라인 구축하기
+###  CI
+1. 변경된 소스 감지 후 Git Pull
+2. 도커 이미지 생성
+3. 도커 허브에 이미지 push
+4. 로컬에 만든 이미지 삭제
+
+### CD
+1. k8s deployment 생성
+2. k8s service 생성
+
+## Jenkins - CI 프로젝트 추가
+### 1. **소스 변경 감지 설정**
+![[sec4_6.png|300]]
+### 2. **도커 이미지 생성 스크립트 커맨드 설정**
+![[sec4_7.png|400]]
+### 3. **빌드 완료 시 CD 프로젝트 또한 빌드 하도록 설정**
+![[sec4_8.png|300]]
+
+## 구조
+![[sec4_1.excalidraw]]
+### 1. 소스 변경 시 젠킨스 CI-Project 자동 빌드
+### 2. Docker Image 생성 커맨드 실행 
+`ansible-playbook -i ./k8s/hosts create-cicd-devops-image.yml --limit ansible-server` 
+
+**create-cicd-devops-image.yml**
+```yml
+- hosts: all
+#   become: true
+
+  tasks:
+  - name: create a docker image with deployed war file
+    command: docker build -t hyuxp/cicd-project-ansible .
+    args:
+        chdir: /root
+
+  - name: push the image on Docker Hub
+    command: docker push hyuxp/cicd-project-ansible
+
+  - name: remove the docker image from the ansible server
+    command: docker rmi hyuxp/cicd-project-ansible
+    ignore_errors: yes
+```
+### 3. CD-Project 빌드
+### 4. k8s 배포 커맨드 실행 
+`ansible-playbook -i ./k8s/hosts k8s-cicd-deployment-playbook.yml;`
+`ansible-playbook -i ./k8s/hosts k8s-cicd-service-playbook.yml;`
+
+**k8s-cicd-deployment-playbook.yml**
+```yml
+- name: Create pods using deployment
+  hosts: kubernetes
+  # become: true
+  # user: ubuntu
+
+  tasks:
+  - name: delete the previous deployment
+    win_command: kubectl delete deployment.apps/cicd-deployment
+    ignore_errors: yes
+
+  tasks:
+  - name: create a deployment
+    win_command: kubectl apply -f C:\Users/박경현_인터넷망\Downloads\cicd-devops-deployment.yml
+```
+**k8s-cicd-service-playbook.yml**
+```yml
+- name: create service for deployment
+  hosts: kubernetes
+  # become: true
+  # user: ubuntu
+
+  tasks:
+  - name: create a service
+    win_command: kubectl apply -f C:\Users/박경현_인터넷망\Downloads\cicd-devops-service.yml
+```
+
+### 5. k8s deployment, service 생성 및 배포

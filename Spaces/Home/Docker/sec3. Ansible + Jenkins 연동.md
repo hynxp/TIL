@@ -231,7 +231,7 @@ title: first-devops-playbook.yml
 ```
 
 
-## 1.Jenkins에 SSH 서버 등록
+## # 1.Jenkins에 SSH 서버 등록
 Jenkins 관리 - SSH Server에 ansible-server 등록
 ![[sec3_2.png|250]]
 

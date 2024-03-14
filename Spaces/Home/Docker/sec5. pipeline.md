@@ -1,0 +1,240 @@
+# Delivery Pipeline 플러그인 사용
+delivery pipeline 플러그인 사용하면 빌드 후 조치에서 build other project 설정한 것을 view 형태로 볼 수 있다.
+![[sec5_1.png|300]]
+![[sec5_2.png]]
+
+# 예제1 - Pipeline 생성
+
+### 1. 스크립트 입력
+![[sec5_3.png]]
+**sample1.yml**
+```yml
+pipeline {
+    agent any
+    stages {
+        stage('Compile') {
+            steps {
+                echo "Compiled successfully!";
+            }
+        }
+
+        stage('JUnit') {
+            steps {
+                echo "JUnit passed successfully!";
+            }
+        }
+
+        stage('Code Analysis') {
+            steps {
+                echo "Code Analysis completed successfully!";
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "Deployed successfully!";
+            }
+        }
+    }
+}
+```
+
+### 3. 빌드 
+![[sec5_4.png]]
+
+### post 추가
+빌드가 완료되었을 때 어떠한 작업을 진행할 것인지 출력해주는 동작
+```yml
+pipeline {
+    agent any
+    stages {
+        stage('Compile') {
+            steps {
+                echo "Compiled successfully!";
+            }
+        }
+
+        stage('JUnit') {
+            steps {
+                echo "JUnit passed successfully!";
+            }
+        }
+
+        stage('Code Analysis') {
+            steps {
+                echo "Code Analysis completed successfully!";
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "Deployed successfully!";
+            }
+        }
+    }
+
+    post {
+      always {
+        echo "This will always run"
+      }
+      success {
+        echo "This will run when the run finished successfully"
+      }
+      failure {
+        echo "This will run if failed"
+      }
+      unstable {
+        echo "This will run when the run was marked as unstable"
+      }
+      changed {
+        echo "This will run when the state of the pipeline has changed"
+      }
+    }
+}
+```
+
+콘솔에 always, success 동작이 출력된 것을 확인할 수 있다.
+![[sec5_5.png|300]]
+# 예제2 - Github에 저장된 script 실행
+### 스크립트 수정
+```yml
+pipeline {
+    agent any
+    stages {
+        stage('Git clone') {
+            steps {
+                git 'https://github.com/joneconsulting/jenkins_pipeline_script';
+            }
+        }
+
+        stage('Compile') {
+            steps {
+                echo "Compiled successfully!";
+                sh './build.sh'
+            }
+        }
+
+        stage('JUnit') {
+            steps {
+                echo "JUnit passed successfully!";
+                sh './unit.sh'
+            }
+        }
+
+        stage('Code Analysis') {
+            steps {
+                echo "Code Analysis completed successfully!";
+                sh './quality.sh'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "Deployed successfully!";
+                sh './deploy.sh'
+            }
+        }
+    }
+}
+```
+
+# 예제2 - 프로젝트 Maven build
+### 1. 스크립트 수정
+```yml
+pipeline {
+    agent any
+    tools { 
+      maven 'Maven3.8.5'
+    }
+    stages {
+        stage('github clone') {
+            steps {
+                git branch: 'main', url: 'https://github.com/joneconsulting/cicd-web-project.git'; 
+            }
+        }
+        
+        stage('build') {
+            steps {
+                sh '''
+                    echo build start
+                    mvn clean compile package -DskipTests=true
+                '''
+            }
+        }
+    }
+}
+```
+
+### 2. Jenkins 관리 - maven 설정
+![[sec5_6.png|300]]
+# 예제3 -  Tomcat 서버에 배포
+### 스크립트 수정
+```yml
+pipeline {
+    agent any
+    tools { 
+      maven 'Maven3.8.5'
+    }
+    stages {
+        stage('github clone') {
+            steps {
+                git branch: 'main', url: 'https://github.com/joneconsulting/cicd-web-project.git'; 
+            }
+        }
+        
+        stage('build') {
+            steps {
+                sh '''
+                    echo build start
+                    mvn clean compile package -DskipTests=true
+                '''
+            }
+        }
+        
+        stage('deploy') {
+            steps {
+                deploy adapters: [tomcat9(credentialsId: 'deployer_user', path: '', url: 'http://192.168.6.93:8088')], contextPath: null, war: '**/*.war'
+            }
+        }
+    }
+}
+```
+
+# 예제4 - Docker 서버에 배포
+### 스크립트 수정
+```yml
+pipeline {
+    agent any
+    tools { 
+      maven 'Maven3.8.5'
+    }
+    stages {
+        stage('github clone') {
+            steps {
+                git branch: 'main', url: 'https://github.com/joneconsulting/cicd-web-project.git'; 
+            }
+        }
+        
+        stage('build') {
+            steps {
+                sh '''
+                    echo build start
+                    mvn clean compile package -DskipTests=true
+                '''
+            }
+        }
+        
+        stage('deploy') {
+            steps {
+                deploy adapters: [tomcat9(credentialsId: 'deployer_user', path: '', url: 'http://192.168.6.93:8088')], contextPath: null, war: '**/*.war'
+            }
+        }
+        
+        stage('ssh publisher') {
+            steps {
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'docker-server', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'docker build --tag hyuxp/devops_exam1 -f Dockerfile .', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '.', remoteDirectorySDF: false, removePrefix: 'target', sourceFiles: 'target/*.war')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+            }
+        }
+    }
+}
+```
