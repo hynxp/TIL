@@ -55,8 +55,7 @@
 ### --list-hosts
 적용되는 호스트 목록
 
->[!NOTE] ad-note
-title: Ansible은 멱등성을 보장한다.
+>[!NOTE]  Ansible은 멱등성을 보장한다.
 같은 설정을 여러 번 실행하더라고도 동일한 결과를 얻는다는 의미다.
 💡 **항상 멱등성이 보장되는가?**
 No! **command** 모듈은 명령어를 무조건 실행하기 때문에 결과가 달라질 수 있다.
@@ -69,12 +68,14 @@ No! **command** 모듈은 명령어를 무조건 실행하기 때문에 결과�
 ### 명령어
  `# ansible all -m ping`
  `# ansible devops -m ping`
- ```ad-note
- all -> hosts 파일에 있는 대상 전체 다
-devops -> hosts 파일에 있는 그룹명
--m -> 모듈 사용
-ping -> ping이라는 모듈을 사용한다.
-```
+ - all
+    - hosts 파일에 있는 대상 전체 다
+- devops
+    - hosts 파일에 있는 그룹명
+- -m
+    - 모듈 사용
+- ping
+	- ping이라는 모듈을 사용한다.
 
 ### 결과
 ```shell
@@ -337,7 +338,7 @@ Jenkins에서 빌드가 완료되면 2, 3번의 yml파일을 자동으로 실행
 `# ansible-playbook -i hosts create-cicd-devops-image.yml --limit 172.17.0.4`
 `# ansible-playbook -i hosts create-cicd-devops-container.yml --limit 172.17.0.2`
 --limit는 hosts파일 중에 이 ip에게만 playbook을 실행시키겠다는 뜻이다.
-> [!NOTE]
+> [!NOTE] 요약
 > 1. ansible이 설치된 컨테이너에 명령어를 yml로 만든다.
 > 2. 다른 컨테이너들의 정보가 담긴 hosts파일을 생성한다.
 > 3. ansible-playbook 명령어로로 쉘 스크립트 실행시키듯이 컨테이너들을 조종한다!
