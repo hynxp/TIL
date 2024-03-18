@@ -40,6 +40,7 @@ pipeline {
 ```
 
 ### 3. 빌드 
+빌드하면 각 과정을 아래처럼  확인할 수 있다.
 ![[sec5_4.png]]
 
 ### post 추가
@@ -97,6 +98,7 @@ pipeline {
 ![[sec5_5.png|300]]
 # 예제2 - Github에 저장된 script 실행
 ### 스크립트 수정
+GitHub repository를 명시하고 스크립트 파일을 실행한다.
 ```yml
 pipeline {
     agent any
@@ -140,6 +142,7 @@ pipeline {
 
 # 예제2 - 프로젝트 Maven build
 ### 1. 스크립트 수정
+- DskipTests - 테스트 코드 건너뛰기
 ```yml
 pipeline {
     agent any
@@ -169,6 +172,7 @@ pipeline {
 ![[sec5_6.png|300]]
 # 예제3 -  Tomcat 서버에 배포
 ### 스크립트 수정
+배포 커맨드 추가
 ```yml
 pipeline {
     agent any
@@ -201,7 +205,9 @@ pipeline {
 ```
 
 # 예제4 - Docker 서버에 배포
+edowon0623/docker:latest 이미지로 생성했던 컨테이너에 배포해보자.
 ### 스크립트 수정
+ssh publisher 관련 커맨드 추가
 ```yml
 pipeline {
     agent any
