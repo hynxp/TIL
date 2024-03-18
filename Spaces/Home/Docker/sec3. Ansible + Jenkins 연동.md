@@ -2,7 +2,8 @@
 ![[sec3_1.webp]]
 ## 도커 네트워크 브릿지 확인
 `# docker network inspect bridge`
-```shell
+
+```json
 {
 	"Name": "bridge",
 	"Containers": {
@@ -54,14 +55,12 @@
 ### --list-hosts
 적용되는 호스트 목록
 
-```ad-note
+>[!NOTE] ad-note
 title: Ansible은 멱등성을 보장한다.
 같은 설정을 여러 번 실행하더라고도 동일한 결과를 얻는다는 의미다.
-
 💡 **항상 멱등성이 보장되는가?**
 No! **command** 모듈은 명령어를 무조건 실행하기 때문에 결과가 달라질 수 있다.
 -> command 모듈은 실행 결과가 항상 changed로 나온다.
-```
 
 # Ansible 모듈 사용
 [모듈 목록](https://docs.ansible.com/ansible/2.9/modules/list_of_all_modules.html)
@@ -122,7 +121,7 @@ Swap:         4.0Gi          0B       4.0Gi
 마커 선으로 둘러싸인 여러 줄의 텍스트 블록 삽입하는 모듈이다.
 
 **yml 예제**
-```yml
+```yaml
 ---
   - name: Add an ansible hosts
     hosts: localhost
@@ -151,7 +150,8 @@ hosts 파일에 block: 아래에 적은 텍스트가 삽입된 것을 확인할 
 # END ANSIBLE MANAGED BLOCK
 ```
 
-💡 2번 과정을 한 번 더 한다고 해도 host가 또 추가되지 않는다.
+> [!NOTE]
+Content2번 과정을 한 번 더 한다고 해도 host가 또 추가되지 않는다.
 아까 말했던 **멱등성**때문이다!!! 
 
 
@@ -204,9 +204,8 @@ hosts 파일에 block: 아래에 적은 텍스트가 삽입된 것을 확인할 
 
 # Jenkins + Playbook 사용하기
 
-```ad-note
-title: first-devops-playbook.yml
-~~~yml
+first-devops-playbook.yml
+```yml
 - hosts: all
 #   become: true  
 
@@ -218,8 +217,9 @@ title: first-devops-playbook.yml
 
   - name: create a container using cicd-project-ansible image
     command: docker run -d --name my_cicd_project -p 8080:8080 cicd-project-ansible
-~~~
-여기서 포트는 왜 **8080:8080**일까?
+```
+
+💡 여기서 포트는 왜 **8080:8080**일까?
 
 ![[sec3_1.excalidraw]]
 
@@ -228,10 +228,8 @@ title: first-devops-playbook.yml
 
 즉 8080포트가 응답하기 때문에 ansible server내에 컨테이너에서는 8080의 요청을 받아야 한다.
 **8080**:8080, **8080**:8081 앞에만 8080이면 된다.
-```
 
-
-## # 1.Jenkins에 SSH 서버 등록
+## 1.Jenkins에 SSH 서버 등록
 Jenkins 관리 - SSH Server에 ansible-server 등록
 ![[sec3_2.png|250]]
 
@@ -246,7 +244,7 @@ Jenkins 관리 - SSH Server에 ansible-server 등록
 이 상태에서 같은 이름의 컨테이너가 이미 존재하면 UNSTABLE 에러가 발생하기 때문에 
 playbook 파일에서 **기존에 컨테이너가 존재하면 중지하고 삭제**하는 명령어를 추가한다.
 
-```shell
+```yml
 - hosts: all
 #   become: true  
 
@@ -273,22 +271,15 @@ playbook 파일에서 **기존에 컨테이너가 존재하면 중지하고 삭�
 ```
 
 # Docker Hub에 등록한 이미지로 컨테이너 실행해보기
-````ad-note
-title: Dockerfile
-```
-FROM tomcat:9.0
+**Dockerfile**
+`FROM tomcat:9.0`
+`LABEL org.opencontainers.image.authors="edowon0623@gmail.com"`
+`COPY ./hello-world.war /usr/local/tomcat/webapps`
 
-LABEL org.opencontainers.image.authors="edowon0623@gmail.com"
-
-COPY ./hello-world.war /usr/local/tomcat/webapps
-```
-````
-
-💡 아래 작업은 Ansible Server에서 해야 한다.
-
+💡 **아래 작업은 Ansible Server에서 해야 한다.**
 ### 1. hosts 파일에 docker-server ip 추가
 ```
-172.17.0.2 <- 
+172.17.0.2 <- ansible-server
 172.17.0.4 <- docker-server
 ```
 
@@ -346,11 +337,8 @@ Jenkins에서 빌드가 완료되면 2, 3번의 yml파일을 자동으로 실행
 `# ansible-playbook -i hosts create-cicd-devops-image.yml --limit 172.17.0.4`
 `# ansible-playbook -i hosts create-cicd-devops-container.yml --limit 172.17.0.2`
 --limit는 hosts파일 중에 이 ip에게만 playbook을 실행시키겠다는 뜻이다.
-
-```ad-summary
-title: 요약
-1. ansible이 설치된 컨테이너에 명령어를 yml로 만든다.
-2. 다른 컨테이너들의 정보가 담긴 hosts파일을 생성한다.
-3. ansible-playbook 명령어로로 쉘 스크립트 실행시키듯이 컨테이너들을 조종한다!
-4. 3번 과정을 **Jenkins 빌드 후 조치에 Exec command**에 입력하면 자동화할 수 있다.
-```
+> [!NOTE]
+> 1. ansible이 설치된 컨테이너에 명령어를 yml로 만든다.
+> 2. 다른 컨테이너들의 정보가 담긴 hosts파일을 생성한다.
+> 3. ansible-playbook 명령어로로 쉘 스크립트 실행시키듯이 컨테이너들을 조종한다!
+> 4. 3번 과정을 **Jenkins 빌드 후 조치에 Exec command**에 입력하면 자동화할 수 있다.

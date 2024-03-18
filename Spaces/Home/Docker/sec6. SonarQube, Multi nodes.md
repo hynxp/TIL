@@ -30,7 +30,7 @@ sonarqube에서 프로젝트가 연결된 것을 확인할 수 있다.
 
 # 예제1 - Bad code 조사하기
 
-before
+**before**
 ```java
 @GetMapping("/")  
 public String index(Model model) {  
@@ -38,7 +38,8 @@ public String index(Model model) {
     return "index";  
 }
 ```
-after
+
+**after**
 ```java
 @GetMapping("/")  
 public String index(Model model) {  
@@ -60,7 +61,7 @@ public String index(Model model) {
 
 sonarqube를 통해 빌드하게 되면 Failed가 뜬다.
 사용하지 않는 logger 필드를 제거하고 sout를 logger로 대체하라는 경고가 표시된다.
-![[Pasted image 20240318164133.png]]![[sec6_5.png]]
+![[sec6_10.png]]![[sec6_5.png]]
 # Jenkins + SonarQube 연동
 ### 1. Jenkins 플러그인 설치
 `SonarQube Scanner for Jenkins`  설치
@@ -123,6 +124,7 @@ pipeline {
     }
 }
 ```
+
 # Jenkins Multi nodes 구성
 ### 구조
 ![[sec6_8.png]]
@@ -148,4 +150,4 @@ pipeline {
 - **credential 추가**
 	- ID : root
 	- PWD : P@ssw0rd
-![[sec6_9.png]]
+![[sec6_9.png|400]]

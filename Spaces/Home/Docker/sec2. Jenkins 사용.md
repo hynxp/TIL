@@ -6,14 +6,10 @@
 위 구조에서 Jenkins 빌드 후 조치 - Deploy war/ear to a container에서 war파일을 톰캣으로 배포하고 싶을 때 Tomcat URL을 localhost:8088 or http://127.0.0.1:8088/로 입력하면 안된다!
 
 ![[sec2_2.webp|200]]
-
-```ad-question
-title: 왜?
+> [!NOTE] 왜?
 Jenkins에서는 이 경로 자체를 자신이 가지고 있는 경로로 접속을 시도한다.(루프백)
-하지만 현재 Jenkins 컨테이너 내에 http://127.0.0.1:8088/는 없기 때문에 **HOST IP:8080**로 입력해야 한다.
-
+하지만 현재 Jenkins 컨테이너 내에 http://127.0.0.1:8088/는 없기 때문에 **HOST IP:8080**로 입력해야 한다.  
 만약 도커 내에 젠킨스를 설치한 게 아니라 윈도우 자체에 젠킨스를 별도로 설치한 경우에는 로컬호스트로 입력해도 된다.
-```
 
 # 빌드 유발
 ### Build periodically
@@ -44,15 +40,11 @@ localhost자체가 루프백(본인을 가리킴)하기 때문에 젠킨스 내�
 # Dockerfile
 이 파일을 통해 도커 이미지를 생성한다.
 
-```ad-note
-title: Dockerfile 예시
-~~~
-FROM tomcat:9.0 
-COPY ./hello-world.war /usr/local/tomcat/webapps
-~~~
+> [!NOTE] Dockerfile 예시
+`FROM tomcat:9.0` 
+`COPY ./hello-world.war /usr/local/tomcat/webapps`
 tomcat:9.0 이미지를 기반으로 하고,  
 루트 디렉토리 밑에 hello-word.war 파일을 /usr/local/tomcat/webapps로 복사해라
-```
 
 # Docker 기본 명령어들
 ### 이미지 빌드 명령어(Container 내에서 테스트)
@@ -61,12 +53,10 @@ tomcat:9.0 이미지를 기반으로 하고,
 ### 컨테이너 실행 명령어 (Container 내에서 테스트)
 `# docker run --privileged_ -p 8080:8080 --name mytomcat docker-server:latest`
 
-```ad-question
-title: 왜 8080:8080이냐
+>[!NOTE] 왜 8080:8080이냐
 맨 처음에 강사의 도커 이미지로 컨테이너 만들 때 8081->8080 이렇게 만들었다.  
-1. pc에서 8081로 요청하면  ssh 서버 컨테이너 내부에서 8080이 응답한다.
-2. 컨테이너 내부에서 8080요청이 들어오면 컨테이너에 있는 또 다른 컨테이너 8080이 응답한다.
-```
+1.pc에서 8081로 요청하면  ssh 서버 컨테이너 내부에서 8080이 응답한다.
+2.컨테이너 내부에서 8080요청이 들어오면 컨테이너에 있는 또 다른 컨테이너 8080이 응답한다.
 
 ### 컨테이너 중지, 삭제  명령어
 `# docker stop mytomcat`  

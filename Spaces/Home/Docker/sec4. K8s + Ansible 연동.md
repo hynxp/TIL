@@ -39,19 +39,17 @@ Pods의 목록을 표시하면서 각 Pod의 상세한 정보와 IP 주소 등�
 Deployment를 서비스로 노출시키고, 외부에서 해당 서비스에 접근할 수 있도록 한다.
 NodePort 타입의 서비스로 80번 포트를 노출한다는 뜻이다.
 
-```ad-note
-title: 만든 deployments를 삭제할 때
-`kubectl create deployment sample-nginx --image=nginx`
+> [!NOTE] 만든 deployments를 삭제할 때
+> `kubectl create deployment sample-nginx --image=nginx`
 deployment를 만들면 sample-nginx의 pod가 1개 생성된다.
 `kubectl delete pod/sample-nginx-56dfc8544d-5ffsj`
 만들어진 pod를 삭제해도 자동으로 replica의 수만큼 다른 이름의 pod가 생성돼 1개를 유지한다.
-
 **deployment 자체를 삭제해야 pods도 한꺼번에 삭제된다.**
-```
 
 # 예제1 - yml파일로 deployments, pod 생성
 
 ### 1. **yml파일 작성**
+
 **sample1.yml**
 ```yml
 apiVersion: apps/v1
