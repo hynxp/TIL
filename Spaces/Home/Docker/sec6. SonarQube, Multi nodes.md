@@ -145,9 +145,21 @@ pipeline {
 **접속**
 `ssh root@172.17.0.5`
 
-### Jenkins - node 추가
+### 4. Jenkins - node 추가
+> [!NOTE] credential 추가
+> id : root
+> password : P@ssw0rd
 
-- **credential 추가**
-	- ID : root
-	- PWD : P@ssw0rd
+
 ![[sec6_9.png|400]]
+
+# 예시3 - Slave Node에서 빌드하기
+## 1. Project 빌드
+
+빌드하고자 하는 item 구성에서 Restrict where this project can be run에 추가한 node 설정
+
+![[sec6_11.png]]
+slave1노드에만 빌드된 것을 확인할 수 있다.
+![[sec6_12.png]]![[sec6_13.png]]
+
+## 2. Pipeline 빌드
