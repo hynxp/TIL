@@ -151,7 +151,7 @@ spec:
 
 **k8s-cicd-service-playbook.yml**
 2번의 service생성하는 yml을 실행하라는 스크립트
-```
+```yml
 - name: create service for deployment
   hosts: kubernetes
   # become: true

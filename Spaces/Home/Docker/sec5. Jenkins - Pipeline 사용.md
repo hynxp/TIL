@@ -7,8 +7,7 @@ delivery pipeline 플러그인 사용하면 빌드 후 조치에서 build other 
 
 ### 1. 스크립트 입력
 ![[sec5_3.png]]
-**sample1.yml**
-```yml
+```groovy
 pipeline {
     agent any
     stages {
@@ -45,7 +44,7 @@ pipeline {
 
 ### post 추가
 빌드가 완료되었을 때 어떠한 작업을 진행할 것인지 출력해주는 동작
-```yml
+```groovy
 pipeline {
     agent any
     stages {
@@ -99,7 +98,7 @@ pipeline {
 # 예제2 - Github에 저장된 script 실행
 ### 스크립트 수정
 GitHub repository를 명시하고 스크립트 파일을 실행한다.
-```yml
+```groovy
 pipeline {
     agent any
     stages {
@@ -143,7 +142,7 @@ pipeline {
 # 예제2 - 프로젝트 Maven build
 ### 1. 스크립트 수정
 - DskipTests - 테스트 코드 건너뛰기
-```yml
+```groovy
 pipeline {
     agent any
     tools { 
@@ -208,7 +207,7 @@ pipeline {
 edowon0623/docker:latest 이미지로 생성했던 컨테이너에 배포해보자.
 ### 스크립트 수정
 ssh publisher 관련 커맨드 추가
-```yml
+```groovy
 pipeline {
     agent any
     tools { 

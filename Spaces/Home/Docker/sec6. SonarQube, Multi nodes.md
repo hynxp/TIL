@@ -81,7 +81,7 @@ sonarqube를 통해 빌드하게 되면 Failed가 뜬다.
 
 ### 파이프라인 스크립트 등록
 이때 `withSonarQubeEnv('Sonarqube-server')`에서 위에서 등록한 SonarQube 서버 이름과 똑같은지 확인해야 한다.
-```yml
+```groovy
 pipeline {
     agent any
     tools { 
@@ -110,17 +110,6 @@ pipeline {
                 }
             }
         }
-        // stage('deploy') {
-        //     steps {
-        //         deploy adapters: [tomcat9(credentialsId: 'deployer_user', path: '', url: 'http://192.168.6.93:8088')], contextPath: null, war: '**/*.war'
-        //     }
-        // }
-        
-        // stage('ssh publisher') {
-        //     steps {
-        //         sshPublisher(publishers: [sshPublisherDesc(configName: 'docker-server', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'docker build --tag hyuxp/devops_exam1 -f Dockerfile .', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '.', remoteDirectorySDF: false, removePrefix: 'target', sourceFiles: 'target/*.war')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
-        //     }
-        // }
     }
 }
 ```
@@ -163,3 +152,34 @@ slave1노드에만 빌드된 것을 확인할 수 있다.
 ![[sec6_12.png]]![[sec6_13.png]]
 
 ## 2. Pipeline 빌드
+
+빌드하고자 하는 Pipeline 구성에서 **agent**부분에 node를 지정한다.
+```groovy
+pipeline {
+    agent {
+        label 'slave1'
+    }
+    tools { 
+        maven 'Maven3.8.5'
+    }
+    stages {
+        stage('github clone') {
+            steps {
+                git branch: 'main', url: 'https://github.com/joneconsulting/cicd-web-project.git'; 
+            }
+        }
+        
+        stage('build') {
+            steps {
+                sh '''
+                    echo build start
+                    mvn clean compile package -DskipTests=true
+                '''
+            }
+        }
+    }
+}
+```
+
+slave1에 정상적으로 빌드된 것을 확인할 수 있다.
+![[sec6_14.png]]
