@@ -1,0 +1,99 @@
+## 네트워크
+
+인터넷망을 통해 어떻게 통신을 하는지
+
+이것을 알려면 IP(인터넷 프로토콜)을 알아야 한다.
+
+## IP
+
+### 역할
+
+- 지정한 IP 주소에 데이터 전달
+- 패킷이라는 통신 단위로 데이터 전달
+
+**IP 패킷**
+![img.png|202](https://blog.kakaocdn.net/dn/ctjfmD/btsCiv4mn9y/iQ1tJ99pL4Gf7gF8kSKN7k/img.png)
+
+### IP 프로토콜의 한계
+
+1. 비연결성
+패킷을 받을 대상이 없거나 서비스가 불능 상태여도 패킷이 전송된다.
+
+2. 비신뢰성
+중간애 패킷이 사라질 수 있다.
+패킷이 순서대로 안 올수도 있다. ex) hello world를 보냈는데, world hello가 도착할 수도 있다.
+
+3. 프로그램 구분
+
+## TCP
+이러한 IP 프로토콜의 한계를 해결해주는 프로토콜
+
+### TCP (Transmission Control Protocol)란?
+: 전송 제어 프로토콜
+즉 데이터 전송을 어떻게 할지 제어한다.
+
+![](https://blog.kakaocdn.net/dn/z4s6X/btsCks65XsP/scVtddQaekQzd9UWBykXR0/img.png)
+
+전송 계층에 해당
+
+IP 패킷을 TCP 세그먼트로 감싼다.
+
+![](https://blog.kakaocdn.net/dn/q1UQn/btsCkszjwsl/0N7adbFyxkuDaVlpwQZRwK/img.png)
+
+### TCP/IP의 패킷 정보
+
+TCP 세그먼트에는 출발지 포트, 목적지 포트, 순서, 검증 정보 등이 포함돼있다.
+그래서 아래의 장점이 있다.
+1. 연결지향적이다.
+연결이 됐는지 확인하고 전송한다. (3 way handshake)
+
+2. 데이터를 전달한 것을 보증한다.
+패킷이 누락됐다는 것을 알 수 있다.
+
+3. 순서를 보장한다.
+데이터의 순서를 보장한다. 
+
+## 3 way handshake
+
+서버와 클라이언트가 어떤 데이터를 주고받을 때 3번의 과정을 거쳐 통신하기 때문에,
+
+서버와 클라이언트가 서로 믿을 수 있다.
+
+![img.png|528](https://blog.kakaocdn.net/dn/y8Vdq/btsCnFYY5Ji/re9BOZt7J6dnSwDkJXc8Rk/img.png)
+
+1. 클라이언트가 서버에게 접속 요청을 한다.
+2. 서버는 접속 요청 메시지와 요청 수락에 대한 메시지도 함께 보낸다.
+3. 클라이언트는 ACK와 함께 데이터를 전송한다.
+
+## UDP(User Datagram Protocol)
+
+IP와 거의 같은데, 포트만 추가된다.
+
+UDP는 왜 사용하나?
+TCP는 번거롭고 최적화가 불가능하다.
+HTTP3에서는 UDP를 사용한다
+
+## PORT
+
+### 포트란?
+
+항구라는 뜻이다.
+
+1. 같은 IP 내에서 프로세스를 구분하는 것이다.
+2. 한 서버에서 여러 애플리케이션이 구동중일 때 데이터가 어떤 애플리케이션에 도착하면 되는지를 구분한다.
+
+예를 들자면 IP는 아파트고 PORT는 동/호수이다.
+0~65535까지 할당이 가능하고, 
+0 ~ 1023는 잘 알려진 포트라고 해서 사용하지 않는 것이 좋다.
+ex) HTTP(80), HTTPS(443), FTP(20,21), SFTP(22), TELNET(23)
+
+## DNS(Domain Name System)
+DNS는 전화번호부 같은 서버를 제공함으로써 도메인 명을 IP 주소로 변환해준다.
+
+### 왜 필요한가?
+IP는 기억하기 어렵다. 200.200.200.2 
+IP는 변경될 수 있다.
+
+### 동작 과정
+![img.png|478](https://blog.kakaocdn.net/dn/eHo5Ux/btsCgYZ4xEa/coJX4iQtNGR9o8BDhPW7lk/img.png)
+도메인에 접속하면 DNS 서버가 매핑된 IP 주소를 응답해준다.
