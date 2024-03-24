@@ -1,0 +1,45 @@
+# **URI와 웹 브라우저 요청 흐름**
+
+URI와 웹 브라우저의 요청 흐름을 알아보자.
+
+## **URI(Uniform Resource Identifier)**
+
+자원을 식별하는 방법.
+
+### **URI? URL? URN?**
+
+URI가 URL과 URN을 포함하고 있다.
+
+### **URI와 URL**
+
+💡 URI는 식별하고, URL은 위치를 가르킨다.
+
+URL은 자원이 실제로 존재하는 위치를 가리키며,
+
+URI는 자원의 위치뿐만 아니라 고유 식별자로서 URL의 의미를 포함한다.
+
+### **구조**
+
+```
+<https://www.google.com/search?q=hello&hl=ko>
+```
+
+위 주소를 예시로 전체 문법은 아래와 같다.
+
+`https` : scheme
+
+`www.google.com` : host
+
+`443` : port
+
+`/search` : path
+
+`?q=hello&hl=ko` : query
+
+1. scheme : 주로 프로토콜을 사용한다 (http, https ..)
+2. user와 password : (서버에 있는) 데이터에 접근하기 위한 사용자의 이름과 비밀번호(거의 사용X)
+3. host : 접속할 도메인명이나 IP주소
+4. port : 접속할 포트번호 (일반적으로 생략함)
+5. path : 자원에 대한 경로 정보이다. 계층 구조로 되어있다. ex) /members/100
+6. query : 주로 query parameter, query string 등으로 불린다. key=value 형태이다.
+7. fragment : 메인 리소스 내에 존재하는 서브 리소스에 접근할 때 이를 식별하기 위한 정보 ex) html a태그의 북마크 기능 , 서버로 전송하는 정보는 아니다.
