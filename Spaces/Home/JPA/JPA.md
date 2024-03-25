@@ -4,6 +4,7 @@ _contexts: []
 _links: []
 _sort:
   field: rank
-  asc: false
+  asc: true
   group: false
+sticker: emoji//1f47d
 ---
