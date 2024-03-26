@@ -13,7 +13,13 @@
   "minimal-style@@blockquote-font-style": "normal",
   "minimal-style@@blockquote-color@@light": "#000000",
   "minimal-style@@h1-variant": "normal",
-  "minimal-style@@h2-color@@light": "#08909E",
   "minimal-style@@list-spacing": 0.23,
-  "minimal-style@@list-indent": 2
+  "minimal-style@@list-indent": 2,
+  "minimal-style@@h2-color@@light": "#08909E",
+  "minimal-style@@code-value@@light": "#4B4B4B",
+  "minimal-style@@code-property@@light": "#4B4B4B",
+  "minimal-style@@code-function@@light": "#C76B00",
+  "minimal-style@@code-string@@light": "#637F38",
+  "minimal-style@@code-keyword@@light": "#C76B00",
+  "minimal-style@@code-operator@@light": "#4B4B4B"
 }
