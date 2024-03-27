@@ -6,5 +6,5 @@ _sort:
   field: rank
   asc: true
   group: false
-sticker: emoji//25fc-fe0f
+sticker: emoji//1f5a5-fe0f
 ---
