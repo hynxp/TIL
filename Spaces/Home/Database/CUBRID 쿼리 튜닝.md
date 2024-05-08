@@ -84,3 +84,13 @@ create index i_game_2 on game(nation_code);
 ```sql
 create index i_game_1 on game(stadium_code, nation_code);
 ```
+
+## cost가 중요한가? 아니!
+cubrid의 Q&A에 따르면 cost 보다는 trace를 보는 게 정확하다고 한다.
+실제로 질문도 cost이 더 높은데 정작 수행 시간은 더 길다는 내용이었다.
+![[CUBRID 쿼리 튜닝-20240508164826571.webp]]
+
+실제로는 `show trace;`해서 trace를 보는 게 정확하다고 한다.
+
+## trace 보는 법
+
