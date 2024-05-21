@@ -93,4 +93,50 @@ cubrid의 Q&A에 따르면 cost 보다는 trace를 보는 게 정확하다고 �
 실제로는 `show trace;`해서 trace를 보는 게 정확하다고 한다.
 
 ## trace 보는 법
+최근 통계쿼리 작성하면서 이것저것 바꿔가며 trace를 확인해 보았다.
 
+**1번 쿼리**
+```sql
+SELECT grp.schl_nm, 
+       SUM(CASE WHEN bbs.attach_cd = 'N' THEN atch.file_sz ELSE 0 END),
+       SUM(CASE WHEN bbs.attach_cd = 'M' THEN atch.file_sz ELSE 0 END),
+       SUM(CASE WHEN bbs.attach_cd = 'R' THEN atch.file_sz ELSE 0 END),
+       SUM(CASE WHEN bbs.attach_cd = 'C' THEN atch.file_sz ELSE 0 END),
+       SUM(atch.file_sz) - SUM(CASE WHEN bbs.attach_cd = 'N' THEN atch.file_sz ELSE 0 END) - 
+                          SUM(CASE WHEN bbs.attach_cd = 'M' THEN atch.file_sz ELSE 0 END) - 
+                          SUM(CASE WHEN bbs.attach_cd = 'R' THEN atch.file_sz ELSE 0 END) - 
+                          SUM(CASE WHEN bbs.attach_cd = 'C' THEN atch.file_sz ELSE 0 END)
+FROM tb_bbs bbs
+JOIN tb_grp grp ON grp.grp_no = bbs.grp_no
+JOIN tb_atch_file atch ON atch.atc_seq = bbs.atc_seq
+WHERE (grp.grp_tp_cd = ? OR grp.grp_tp_cd = ?)
+  AND (grp.schl_cd IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?))
+  AND atch.file_path >= ? AND atch.file_path < ?
+GROUP BY grp.schl_nm;
+
+```
+
+**2번 쿼리**
+```sql
+SELECT grp.schl_nm, 
+       SUM(CASE WHEN bbs.attach_cd = 'N' THEN atch.file_sz ELSE 0 END),
+       SUM(CASE WHEN bbs.attach_cd = 'M' THEN atch.file_sz ELSE 0 END),
+       SUM(CASE WHEN bbs.attach_cd = 'R' THEN atch.file_sz ELSE 0 END),
+       SUM(CASE WHEN bbs.attach_cd = 'C' THEN atch.file_sz ELSE 0 END),
+       SUM(atch.file_sz) - SUM(CASE WHEN bbs.attach_cd = 'N' THEN atch.file_sz ELSE 0 END) - 
+                          SUM(CASE WHEN bbs.attach_cd = 'M' THEN atch.file_sz ELSE 0 END) - 
+                          SUM(CASE WHEN bbs.attach_cd = 'R' THEN atch.file_sz ELSE 0 END) - 
+                          SUM(CASE WHEN bbs.attach_cd = 'C' THEN atch.file_sz ELSE 0 END)
+FROM tb_atch_file atch
+JOIN tb_bbs bbs ON atch.atc_seq = bbs.atc_seq
+JOIN tb_grp grp ON grp.grp_no = bbs.grp_no
+WHERE (grp.grp_tp_cd = ? OR grp.grp_tp_cd = ?)
+  AND (grp.schl_cd IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?))
+  AND atch.file_path >= ? AND atch.file_path < ?
+GROUP BY grp.schl_nm;
+
+```
+차이는 조인의 순서다.
+
+gpt한테 trace 분석 해달라고 했더니 아래와 같이 답변한다.
+![[CUBRID 쿼리 튜닝-20240520174659619.webp]]
