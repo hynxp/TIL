@@ -100,17 +100,17 @@ ex) 위에서 설명한 넷플리스를 예로 지역 간 네트워크 연결이
 
 ## NoSQL 데이터베이스의 종류
 ### 1. 키-값 저장소 (Key-Value Stores)
-![[IMG-20241104154030579.png]]
+![[IMG-20241107105119837.png]]
 키와 값을 매핑하여 데이터를 저장하는 형태로, 빠른 조회가 필요할 때 유용하다.
 ex) Redis, Amazon DynamoDB
 
 ### 2. 도큐먼트 저장소 (Document Stores)
-![[IMG-20241104154018309.png]]
+![[IMG-20241107105119884.png]]
  key/value의 확장된 형태로 value에 문서(JSON, XML 등)를 저장한다.
  ex) MongoDB, CouchDB
 
 ### 3. 컬럼 기반 저장소 (Column-Family Stores)
-![[IMG-20241104154023703.png]]
+![[IMG-20241107105120611.png]]
 RDBMS가 데이터를 행 단위로 저장하는 것과 달리, NoSQL은 **열 단위로** 데이터를 그룹화해 저장한다.
 
 예를들면 RDBMS의 학생 정보를 저장하는 테이블에서 데이터는 한 행에 모든 데이터가 함께 저장된다.
@@ -138,7 +138,7 @@ ex) Apache Cassandra, HBase
 
 ### 4. 그래프 데이터베이스 (Graph Databases)
 
-![[IMG-20241104154038179.png]]
+![[IMG-20241107105120849.png]]
 노드와 엣지로 구성된 그래프 구조를 기반으로 데이터를 저장하며, 복잡한 관계를 쉽게 쿼리할 수 있다.
 역시 key/value 형태로 저장되고 모든 노드는 끊기지 않고 연결되어 있다.
 ex) Neo4j, Amazon Neptune

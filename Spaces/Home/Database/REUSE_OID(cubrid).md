@@ -33,7 +33,7 @@ OID(Object Identifier)는 볼륨 번호, 페이지 번호, 슬롯 번호와 같�
 나도 얼마전에 통계 조인쿼리 작성하면서 특정 테이블이 REUSE_OID가 설정돼있어서 참조가 안된다고 에러 문구가 떴었던 터라... 이거랑 관련된 것 같다.
 
 그래서 Q&A에 해당 내용을 찾아보니 이런 답변이 있었다.
-![[REUSE_OID(cubrid)-20240509171018592.webp]]
+![[IMG-20241107153321984.webp]]
 큐브리드에서는 다른 테이블명을 data type으로 사용할 수가 있는데
 `createa table a(a int, b int);`
 `create table b(name a);`
