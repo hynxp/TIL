@@ -1,27 +1,36 @@
-# TIL
-> ✏️ Today I Learned
-> 
-> 하루동안 공부한 내용을 정리해서 기록합니다.
+# TIL  
+> ✏️ Today I Learned  
+>   
+> 하루동안 공부한 내용을 정리해서 기록합니다.  
+>   
+> 옵시디언 기준으로 작성되었으며 이미지는 보이지 않습니다.  
+>   
+> 실제 정리 노트는 [`Spaces/Home`](./Spaces/Home) 디렉토리 아래에 위치하며, 각 주제별로 폴더가 나누어져 있습니다.  
 
-## Java
-* [기본 자료형과 참조 자료형](https://github.com/kyunghyun-Park/TIL/blob/main/Java/DataType.md)
-* JVM 구조와 동작 과정
-* [static 블록](https://github.com/kyunghyun-Park/TIL/blob/main/Java/staticBlock.md)
-* [상속 시 조심해야 할 생성자](https://github.com/kyunghyun-Park/TIL/blob/main/Java/inheritanceAndConstructor.md)
-* [==와 equals()](https://github.com/kyunghyun-Park/TIL/blob/main/Java/%3D%3Dandequals.md)
 
-<br>
+## 작성규칙  
+- 폴더명은 영어로 한다.  
+- 파일명은 (웬만하면) 한글로 한다.  
 
-## JavaScript
-* [브라우저의 전역 변수 충돌 문제를 회피하는 방법](https://github.com/kyunghyun-Park/TIL/blob/main/JavaScript/scope.md)
 
-<br>
+## Folder Structure  
+```  
+├── CS  
+│   ├── Network  
+│   ├── Database  
+│   └── Operating System  
+├── HTTP  
+├── Java  
+├── JavaScript  
+├── OOP  
+├── Clean Code  
+├── Spring  
+├── TestCode  
+├── JPA  
+├── Docker  
+└── Database  
+```
 
-## 테스트 코드
-* [테스트 코드란](https://github.com/kyunghyun-Park/TIL/blob/main/TestCode/applicationProperties.md)
-* [테스트 코드 수행 시 application.properties](https://github.com/kyunghyun-Park/TIL/blob/main/TestCode/applicationProperties.md)
 
-<br>
-
-## JPA
-* [변경감지와 병합](https://github.com/kyunghyun-Park/TIL/blob/main/JPA/dirtychecking_merge.md)
+## Reference  
+[Sung Yun Byeon님 TIL](https://github.com/zzsza/TIL)
