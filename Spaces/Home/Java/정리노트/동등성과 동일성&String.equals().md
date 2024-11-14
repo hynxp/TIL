@@ -25,18 +25,34 @@ Parent 객체 안에 `String name` 이라는 변수에 같은 값을 넣고 비�
 참조 자료형은 equals()를 오버라이딩하여 비교해야 한다.
 그렇지 않으면 `==`처럼 hashCode()값을 비교하므로 equals()를 오버라이딩해 주소가 아닌 필드값을 비교하도록 재정의 해주어야 한다.
 
-대표적인 예로 객체 타입인 String 클래스의 equals 오버라이딩을 보면
-![[Pasted image 20241024010256.png]]
-원래대로라면 문자열 값이 아닌 주소값을 비교하기 때는데 equals()가 재정의 되어있어 문자열 값으로 비교할 수 있는 것이다.
+대표적인 예로 객체 타입인 String 클래스의 equals 오버라이딩을 보면 주소값이 아닌 문자열을 하나하나 비교한다.
+```java
+public boolean equals(Object anObject) {
+    if (this == anObject) {         // 동일한 객체를 비교할 때 true를 반환
+        return true;
+    }
+    if (anObject instanceof String) { // 비교 대상이 String 타입인지 확인
+        String anotherString = (String) anObject;
+        int n = value.length;
+        if (n == anotherString.value.length) {  // 길이가 동일한지 확인
+            char v1[] = value;
+            char v2[] = anotherString.value;
+            int i = 0;
+            while (n-- != 0) {       // 각 문자를 하나씩 비교
+                if (v1[i] != v2[i]) { // 문자 하나라도 다르면 false 반환
+                    return false;
+                }
+                i++;
+            }
+            return true;              // 모든 문자가 동일할 경우 true 반환
+        }
+    }
+    return false;                    // 타입이 다르거나 길이가 다른 경우 false 반환
+}
 
-인코딩 방식에 따라 배열이나 getChar()를 사용해서 문자하나하나 비교하는 걸 확인할 수 있다.
+```
 
-**StringLatin1.equals()**
-![[Pasted image 20241024010527.png]]
-
-**StringUTF16.equals()**
-![[Pasted image 20241024010807.png]]
-
+원래 `equals()` 메서드는 객체의 주소값을 비교하는데, String의 `equals()`가 재정의 되어있어 문자열 값으로 비교할 수 있는 것이다.
 
 ## 오버라이딩할 때는 hashCode()도 같이 오버라이딩 해야 한다.
 
