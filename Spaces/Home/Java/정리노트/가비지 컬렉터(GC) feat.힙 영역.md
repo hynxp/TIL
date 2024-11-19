@@ -169,13 +169,13 @@ GC가 실행되는 동안에는 Mark and Sweep 작업을 수행하는 스레드�
 
 
 ## 가비지 컬렉션(GC)의 알고리즘 종류
-
 ### Serial GC
 **하나의 스레드로 GC를 실행하는 방식**이다.
 즉 GC를 처리하는 스레드가 1개(싱글 스레드)여서 Stop The World 시간이 길다.
 Minor GC 에는 `Mark-Sweep`을 사용하고, Major GC에는 `Mark-Sweep-Compact`를 사용한다.
 
 장비가 엄청 안 좋지 않은 이상 실무에서 사용하는 경우는 없다.
+클라이언트용 장비에 최적화된 GC이기 때문에 WAS로 사용하는 JVM에서 절대 사용하면 안 된다.
 ![[IMG-20241116233430929.png|300]]
 
 프로그램 실행 시 -XX:+UseSerialGC 옵션을 지정하여 사용할 수 있다.
