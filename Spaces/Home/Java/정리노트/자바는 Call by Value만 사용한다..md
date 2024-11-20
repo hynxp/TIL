@@ -80,6 +80,19 @@ main메서드가 실행하면 힙 영역에 `arr` 변수가 적재될 것이다.
 ***"레퍼런스 값(reference value)를 call by value로 전달하면 호출된 메서드 내에서 호출 한 쪽에서 참조하고 있는 오브젝트 내부 값을 변경할 수 있다."***
 
 
+## NullPointerException의 pointer는?
+자바에는 포인터(pointer)개념이 없어서 더욱 견고한 언어라고 했는데, NullPointerException의 포인터는 뭘까?
+
+![[String Constant Pool.excalidraw]]
+자바에서 객체는 힙(heap) 메모리에 저장되며, 변수(레퍼런스)는 해당 객체의 메모리 위치를 간접적으로 가리킨다.
+이런 레퍼런스는 내부적으로 포인터와 비슷한 역할을 하지만, 프로그래머가 메모리 주소를 직접 조작하거나 관리할 수 없다.
+
+null은 레퍼런스가 어떤 객체도 가리키지 않음을 나타내는 값이다.
+즉, `NullPointerException`은 **null 레퍼런스를 사용하려고 시도할 때 발생**한다.
+
+자바에서 비록 "포인터"라는 용어를 쓰지만, 이는 메모리 주소를 직접 다루는 C/C++의 포인터와는 다른 개념이다.
+
+
 
 참고
 [자바는 Call By Value(Pass By Value) 방식으로만 동작한다](https://mangkyu.tistory.com/322)
