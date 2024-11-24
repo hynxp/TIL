@@ -38,7 +38,7 @@ Native Memory를 활용하는 Metaspace는 JVM 힙 메모리와 독립적이므�
 JDK 8부터 PermGen이 제거되고 **Metaspace**가 도입됨으로써 변화는 다음과 같다.
 
 ### 1. Static 변수와 상수 풀 관리의 변화
-기존 PermGen에서 관리되던 Static 변수와 상수(Constant Pool)는 이제 **Java Heap 영역**으로 옮겨져 GC의 대상이 되었다. 이를 통해 메모리 관리가 더 효율적으로 이루어졌으며, 메모리 누수 가능성도 줄어들었다.
+기존 PermGen에서 관리되던 Static 변수와 상수(Constant Pool)는 이제 **Java Heap 영역**으로 옮겨져 [[가비지 컬렉터(GC) feat.힙 영역|GC]]의 대상이 되었다. 이를 통해 메모리 관리가 더 효율적으로 이루어졌으며, 메모리 누수 가능성도 줄어들었다.
 
 ### 2. 클래스 메타데이터 관리의 유연성
 Metaspace는 PermGen과 마찬가지로 클래스 메타데이터를 저장한다. 하지만 Native Memory를 활용하기 때문에 메모리 크기를 OS가 자동으로 조정할 수 있다.
