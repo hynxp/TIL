@@ -25,9 +25,9 @@ public class HeapOOM {
 
 ### 2. GC Overhead Limit 초과
 [[가비지 컬렉터(GC) feat.힙 영역|GC(Garbage Collector)]]가 메모리를 정리하려고 애써도 공간이 회수되지 않으면 OOM 에러 중  `GC overhead limit exceeded`가 발생한다. 이는 메모리가 부족해 GC가 대부분의 시간을 소모하고, 프로그램이 정상적으로 실행되지 않을 때 나타난다.
+정확히는 GC가 수행되어 새로 확보된 메모리가 전체 메모리의 2%미만이면 발생한다.
 
 예를 들어, 아래처럼 대량의 객체를 반복적으로 생성하면 GC가 이를 처리하지 못할 수 있다.
-전체 메모리 2% 미만일때 
 
 ```java
 public class GCOverheadOOM {
