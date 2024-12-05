@@ -21,7 +21,7 @@ public class PrintStream extends FilterOutputStream
 ```
 즉, println()은 I/O 작업이며 이는 **프로그램이 데이터를 출력할 때 운영체제(OS)의 표준 출력 장치(콘솔 창, 터미널)로 데이터를 보내는 작업을 수행한다는 뜻**이다.
 
-이는 **Blocking I/O** 방식으로 동작하며 이는 데이터 출력 작업이 완료될 때까지 호출한 스레드가 블록(block)되어 다른 작업을 처리하지 못하는 방식을 의미한다.
+이는 [[Sync&Async, Blocking&Non-Blocking#Blocking&Non-Blocking|Blocking I/O 방식]]으로 동작하며 이는 데이터 출력 작업이 완료될 때까지 호출한 스레드가 블록(block)되어 다른 작업을 처리하지 못하는 방식을 의미한다.
 
 
 ### 2. synchronized 작업
@@ -44,7 +44,7 @@ public void println(String x) {
 
 
 ### + 로그 레벨관리가 어려움
-`System.out.println`은 로그의 중요도(DEBUG, INFO, WARN, ERROR 등)를 구분하지 못한다. 이는 프로덕션 환경에서 디버깅 메시지와 중요한 오류 로그가 섞이는 문제를 야기할 수 있습니다.
+`System.out.println`은 로그의 중요도(DEBUG, INFO, WARN, ERROR 등)를 구분하지 못한다. 이는 프로덕션 환경에서 디버깅 메시지와 중요한 오류 로그가 섞이는 문제를 야기할 수 있다.
 
 
 ## 해결 방법은?
