@@ -227,7 +227,9 @@ java -XX:+UseConcMarkSweepGC -jar Application.java
 
 
 ### G1 GC(Garbage First)
-CMS GC를 대체하기 위해 설계된 방식으로, **가비지가 많은 영역**(Garbage First)을 우선적으로 청소하는 방식으로 동작한다. Java 9부터 디폴트 GC로 지정되었다.
+CMS GC를 대체하기 위해 설계된 방식으로, 대용량의 메모리가 있는 멀티 프로세스 시스템을 위해 제작되었다.
+G1 GC는 **가비지가 많은 영역**(Garbage First)을 우선적으로 청소하는 방식으로 동작한다. 
+또한 Java 9부터 디폴트 GC로 지정되었다.
 
 
 ![[IMG-20241116235230243.png]]
@@ -242,7 +244,13 @@ G1 GC는 힙 메모리를 **Young 영역과 **Old 영역**으로 나누지 않�
 결국 GC 빈도가 줄어드는 효과를 얻는 것이다.
 
 **여러 GC 쓰레드**를 사용하여 병렬로 작업을 수행하고 각 Region에 대해 Compaction(압축)도 하기 때문에 단편화를 방지할 수 있다는 장점이 있다.
+
 특히 **대규모 힙 메모리**를 사용하는 애플리케이션에서 우수한 성능을 발휘한다. (힙이 작을경우 미사용을 권장)
+G1 GC가 Parse Time을 제어함으로써 GC 작업을 수행하면서 발생하는 STW 시간을 일정 수준 이하로 유지하려고 한다.
+```bash
+java -XX:MaxGCPauseMillis=200
+```
+설정된 목표 Pause Time에 맞게 작업의 **크기와 범위를 동적으로 조정**한다. 예를 들어, 더 짧은 목표 Pause Time이 설정되면, GC는 수집할 Region의 개수를 줄여 작업을 빠르게 완료한다.
 
 
 ```bash
