@@ -30,6 +30,19 @@ public synchronized boolean isEmpty() {
 
 ArrayList는 동기화를 지원하지 않아 불안전하고 여러 스레드가 동시에 액세스가 가능하다.
 
+### vector는 무조건 스레드 안전할까?
+아래 코드는 스레드 안전할까?
+```java
+if (vector.size() > 0) {
+  vector.remove(vector.get(0));
+}
+```
+위 코드는 안전하지 않다. 
+#### 왜!?!? 🤔
+3가지 메서드 다 동기화가 되어있지만  `synchronized`는 **단일 메서드 호출** 동안만 보호하기 때문에 여러 메서드가 조합된 작업에서는 보호가 되지 않는다.
+이를 **원자성(atomicity)** 문제라고 한다.
+다른 스레드가 중간에 `vector.clear()`를 호출하여 모든 요소를 제거하면 `IndexOutOfBoundsException` 발생한다.
+
 
 ### 확장 방식
 배열의 크기가 가득 찼을 때 확장되는 방식도 차이가 있다.
