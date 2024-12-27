@@ -145,8 +145,26 @@ WAS(Tomcat)와 같은 환경에서는 스레드 풀을 사용하기 때문에, �
 사용 후에 비워주지 않는다면 해당 Thread를 부여받게 되는 다른 사용자가 기존에 세팅된ThreadLocal의 데이터를 공유하게 될 수도 있다.  
 
 
+## @Transactional
+스프링은 `TransactionSynchronizationManager`라는 내부 클래스를 사용하여 트랜잭션 컨텍스트를 관리한다. 이 클래스는 트랜잭션 속성을 저장하여 스레드 로컬을 활용한다.
 
+```java
+public abstract class TransactionSynchronizationManager {
+    private static final ThreadLocal<Map<Object, Object>> resources = new ThreadLocal<>();
+    private static final ThreadLocal<Set<TransactionSynchronization>> synchronizations = new ThreadLocal<>();
+    private static final ThreadLocal<String> currentTransactionName = new ThreadLocal<>();
+    private static final ThreadLocal<Boolean> currentTransactionReadOnly = new ThreadLocal<>();
+    private static final ThreadLocal<Integer> currentTransactionIsolationLevel = new ThreadLocal<>();
+}
+```
 
+| **변수 이름**                          | **역할**                                                                                                           |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `resources`                        | 현재 스레드에서 사용 중인 트랜잭션 리소스를 저장한다. 리소스는 데이터베이스 연결(`Connection`), 세션(`Session`), 캐시 같은 객체이다.                          |
+| `synchronizations`                 | `TransactionSynchronization`은 후처리 작업을 정의하는 인터페이스다. 트랜잭션이 끝난 후 수행해야 할 후처리 작업(커밋 후 로깅, 롤백 후 알림 전송)을 저장한다.          |
+| `currentTransactionName`           | 현재 트랜잭션의 이름을 저장한다. 애플리케이션에서 여러 트랜잭션이 있을 경우, 이름을 통해 어떤 트랜잭션이 실행 중인지 구분할 수 있다.                                     |
+| `currentTransactionReadOnly`       | 현재 트랜잭션이 읽기 전용인지 여부를 저장한다. 읽기 전용 트랜잭션은 데이터베이스에 변경을 가하지 않으므로 최적화(예: 읽기 전용 커넥션)를 적용할 수 있다. 쓸모없는 업데이트나 성능 저하를 방지한다. |
+| `currentTransactionIsolationLevel` | 현재 트랜잭션의 격리 수준을 저장한다.                                                                                            |
 
 
 
