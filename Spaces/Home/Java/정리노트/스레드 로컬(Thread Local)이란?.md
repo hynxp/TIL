@@ -148,6 +148,8 @@ WAS(Tomcat)와 같은 환경에서는 스레드 풀을 사용하기 때문에, �
 ## @Transactional
 스프링은 `TransactionSynchronizationManager`라는 내부 클래스를 사용하여 트랜잭션 컨텍스트를 관리한다. 이 클래스는 트랜잭션 속성을 저장하여 스레드 로컬을 활용한다.
 
+트랜잭션 컨텍스트는 스레드별로 독립적이어야 하며, 동일한 스레드 내에서는 일관성을 유지해야 하기 때문이다.
+
 ```java
 public abstract class TransactionSynchronizationManager {
     private static final ThreadLocal<Map<Object, Object>> resources = new ThreadLocal<>();
