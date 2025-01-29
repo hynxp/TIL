@@ -119,3 +119,4 @@ public KakaoTokenResponse getToken(String code) {
 참고
 [RestClient 알아보기 (RestTemplate이 Deprecated 된다고요?)](https://poalim.tistory.com/59)
 [토비님 유튜브](https://youtu.be/S4W3cJOuLrU?si=jeJw2jpg7HU5dwzw)
+[RestTemplate은 너무 낡았고, WebClient는 너무 귀찮아. 뭐? RestClient?](https://irerin07.tistory.com/253)
