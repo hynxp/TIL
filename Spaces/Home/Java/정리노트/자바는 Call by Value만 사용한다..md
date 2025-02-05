@@ -71,6 +71,32 @@ main메서드가 실행하면 힙 영역에 `arr` 변수가 적재될 것이다.
 그 값이 힙에 저장된 위치를 가리키는 메모리 주소인 것이다.
 따라서 참조는 실제 객체에 대한 alias가 아니라 실제 객체에 접근하고 조작하는 방법이라고 볼 수 있다.
 
+```java
+class Person {
+    String name;
+}
+
+public class CallByValueExample2 {
+    public static void main(String[] args) {
+        Person p1 = new Person();
+        p1.name = "Alice";
+
+        changeReference(p1);
+
+        System.out.println(p1.name);  // "Alice"
+    }
+
+    public static void changeReference(Person p) {
+        p = new Person();  // 새로운 객체 할당
+        p.name = "Bob";    // 새로운 객체의 name 변경
+    }
+}
+```
+위 코드를 보면 `p1`의 참조값이 복사되어 `p`로 전달되었다.
+changeReference 메서드에서는 전달받은 p를 새로운 Person 객체로 재할당한다.
+만약 자바에서 객체의 복사가 Call by Reference로 동작하는 거라면 p1 객체가 새롭게 할당한 객체로 바껴야할 것이다.
+but! **p는 새로운 객체를 참조하지만 원래 `p1`에는 영향이 없다.** 이게 Call by Value인 결정적인 이유다.
+
 
 토비님의 페이스북 글을 읽으면 더욱 명확하게 이해할 수 있다.
 ![[IMG-20241115193327599.png|500]]
