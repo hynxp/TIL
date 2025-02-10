@@ -77,6 +77,36 @@ class Singleton {
     }
 }
 ```
+
+### 설명
+왜 if문이 2번이나 필요한걸까?
+#### (1) 첫 번째 `if (instance == null)`
+```java
+if (instance == null) {
+    synchronized (Singleton.class) {
+```
+첫 번째 `if` 문은 **이미 인스턴스가 생성되어 있으면 동기화 블록을 실행하지 않도록 최적화하는 역할**을 한다.
+`instance`가 이미 생성된 경우 불필요하게 `synchronized` 블록에 들어가지 않고 바로 반환한다.
+즉, **성능 최적화**를 위한 것이다.
+
+#### (2) 두 번째 `if (instance == null)`
+```java
+synchronized (Singleton.class) {
+    if (instance == null) { 
+```
+`synchronized` 블록에 들어왔을 때, **다른 스레드가 이미 인스턴스를 생성했을 수도 있다.**
+따라서 두 번째 `if (instance == null)`을 통해 **인스턴스가 정말 생성되지 않았는지 다시 한 번 확인**해야 한다.
+그래서 **이중 체크(Double-Checked Locking)** 기법이라고 부르는 것이다!
+
+#### 시나리오
+1. **스레드 A**가 `getInstance()`를 호출 → `if (instance == null)` 확인 후 `synchronized (Singleton.class)` 블록에 진입
+2. **스레드 B**도 `getInstance()`를 호출 → `if (instance == null)` 확인 후 `synchronized` 블록에 진입하려 하지만, **스레드 A가 락을 점유하고 있어서 대기**
+3. **스레드 A가 `new Singleton()`을 실행하고 `instance`가 생성됨**
+4. **스레드 A가 락을 해제한 후, 스레드 B가 동기화 블록에 진입**
+5. **스레드 B는 두 번째 `if (instance == null)`을 확인** → 이미 `instance`가 생성되었기 때문에, 새롭게 `new Singleton()`을 실행하지 않음
+
+즉, **이중 체크 덕분에 단 하나의 인스턴스만 생성되도록 보장할 수 있다.** 후후
+
 ### 개선점
 -  인스턴스 필드에 `volatile`을 사용하여 인스턴스가 완전히 초기화되기 전에 다른 스레드가 접근하는 문제 방지
 - `synchronized` 블록 안에서 한 번 더 `INSTANCE == null`을 체크하여 불필요한 동기화 방지
@@ -88,6 +118,7 @@ class Singleton {
 > 그래서 ~~volatile~~ 키워드를 통해 이 변수는 캐시에서 읽지 말고 메인 메모리에서 읽어오도록 지정해주는 것이다.
 
 ![[Pasted image 20250201105244.png|300]]
+
 ### 문제점
 그러나 `volatile` 키워드를 이용하기위해선 JVM 1.5이상이어야 되고, JVM에 대한 심층적인 이해가 필요하여, JVM에 따라서 여전히 쓰레드 세이프 하지 않는 경우가 발생하기 때문에 사용하기를 지양하는 편이다.
 
