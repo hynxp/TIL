@@ -11,6 +11,12 @@
 
 스케줄링의 예로 FCFS(First-Come, First-Served), SJF(Shortest-Job-First), Priority, RR(Round-Robin), Multilevel Queue 등이 있다. 자세한 건 [[CPU 스케줄링(FCFS, SJF, RR, MLFQ)|여기]]서 확인하자.. 
 
+## 선점형과 비선점형 스케줄링
+### 선점형 스케줄링
+하나의 프로세스가 자원을 사용하고 있을 때 다른 프로세스가 해당 자원을 빼앗을 수 있는 스케줄링
+
+### 비선점형 스케줄링
+하나의 프로세스가 자원을 사용하고 있을 때 다른 프로세스가 해당 자원을 빼앗을 수 없는 스케줄링
 
 ## 스레드 스케줄링(Thread Scheduling)
 프로세스 스케줄링과 마찬가지로 스레드 스케줄링은 운영체제에서 다중 스레드를 관리하며, CPU를 사용할 수 있는 스레드를 선택하고 CPU를 할당하는 작업을 말한다.
