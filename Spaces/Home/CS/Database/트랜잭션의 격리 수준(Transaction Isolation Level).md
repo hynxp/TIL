@@ -8,13 +8,29 @@
 트랜잭션의 격리수준은 [[트랜잭션 - ACID 원칙, Problem 3가지#트랜잭션의 주요 특성 (ACID)|ACID 특성]]을 보장하기 위해 사용한다.
 `락`을 통해 해결할 수 있지만, 무차별적으로 락을 걸다보면 성능저하가 발생하고 느슨한 락은 데이터 무결성을 위반하기 때문에 효율적인 락 사용을 위해 적절한 격리수준은 반드시 필요하다.
 
+![[IMG-20241107105119852.png|500]]
+참고[[트랜잭션 - ACID 원칙, Problem 3가지#트랜잭션에서 발생할 수 있는 문제들]]
 
 
+### 1. **Read Uncommitted**
+- 가장 낮은 격리 수준으로, 트랜잭션이 커밋되지 않은 데이터를 다른 트랜잭션이 읽을 수 있다.
+- `더티 리드`가 발생할 수 있다.
 
-![[IMG-20241107105119852.png]]
+### 2. **Read Committed**
+- 트랜잭션이 커밋한 데이터만 읽을 수 있다.
+- `더티 리드`는 방지되지만, `반복 불가능한 읽기 문제`가 발생할 수 있다.
 
+### 3. **Repeatable Read**
+- 같은 트랜잭션에서 같은 데이터를 여러 번 조회할 때 값이 변하지 않도록 보장한다.
+- `팬텀 리드`는 발생할 수 있다.
+
+### 4. **Serializable**
+- 위 세 가지 현상 뿐만 아니라 아예 이상한 현상 자체가 발생하지 않는 level이다.
+- 가장 높은 격리 수준으로, 모든 트랜잭션을 직렬화하여 실행하는 것과 같은 효과를 낸다.
+-  성능이 저하될 수 있다.
 
 
 참고
 [트랜잭션의 격리 수준(Isolation Level)에 대해 쉽고 완벽하게 이해하기](https://mangkyu.tistory.com/299)
 [Isolation Level이란?](https://akasai.space/db/about_isolation/)
+[쉬운코드/transaction isolation level 설명합니다! isolation이 안될 때 나타날 수 있는 여러 현상들과 snapshot isolation도 같이 설명합니다!!](https://youtu.be/bLLarZTrebU?si=pdahnwWKiWsQLS87)
