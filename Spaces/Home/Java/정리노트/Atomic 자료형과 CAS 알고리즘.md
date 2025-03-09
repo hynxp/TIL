@@ -14,10 +14,12 @@
 그 이유는  내부적으로 **Compare-And-Swap(CAS) 알고리즘**을 사용하여 동시성을 보장한다.
 
 
-## CAS(Compare-And-Swap) 알고리즘
+## CAS(Compare-And-Swap) 알고리즘이란?
 이들 클래스는 내부적으로 **CAS 알고리즘을 사용해 동시성을 보장**한다.
+![[Pasted image 20250309022736.png]]
 
-CAS 알고리즘은 "비교 후 교환"하는 방식으로 동작한다. 하드웨어에서 제공하는 **원자적 연산(Atomic Operation)**을 이용하여 경쟁 상태를 피한다.
+CAS 알고리즘은 "비교 후 교환"하는 방식으로 동작한다. 
+하드웨어에서 제공하는 **원자적 연산(Atomic Operation)**을 이용하여 경쟁 상태를 피한다.
 
 ### CAS의 동작 방식
 CAS 알고리즘은 다음과 같은 3가지 값을 사용한다.
@@ -31,61 +33,39 @@ CAS 알고리즘은 다음과 같은 3가지 값을 사용한다.
 2. 같다면 새로운 값으로 변경한다.
 3. 다르다면 변경하지 않고 아무 작업도 수행하지 않는다.
 
-이 방식은 `synchronized` 키워드와 달리 블로킹 없이 동작하여 성능이 향상된다.
-
-
-### CAS 예제 (AtomicInteger)
-아래는 `AtomicInteger`를 이용하여 CAS 연산을 수행하는 예제이다.
-
+이를 자바 코드로 표현하면 다음과 같다.
 ```java
-import java.util.concurrent.atomic.AtomicInteger;
-
-public class AtomicExample {
-    public static void main(String[] args) {
-        AtomicInteger atomicInteger = new AtomicInteger(0);
-
-        // CAS를 이용한 값 변경
-        boolean success = atomicInteger.compareAndSet(0, 10);
-
-        System.out.println("CAS 연산 성공 여부: " + success);
-        System.out.println("현재 값: " + atomicInteger.get());
+public boolean compareAndSwap(int expectedValue, int newValue) {
+    if (memoryValue == expectedValue) { // 예상한 값이 현재 값과 같다면
+        memoryValue = newValue; // 새로운 값으로 변경
+        return true; // 성공
     }
+    return false; // 실패
 }
 ```
 
-위 코드는 `atomicInteger`가 0일 때만 10으로 변경한다. `compareAndSet(0, 10)` 메서드는 내부적으로 CAS 연산을 수행하여 값이 예상 값과 동일하면 새로운 값으로 설정한다.
 
+### 장점과 단점
 
-## CAS의 장점과 단점
-
-### 장점
+#### 장점
 - **비교적 높은 성능**: `synchronized`를 사용하지 않으므로, 블로킹 없이 동작하여 성능이 향상된다.
 - **경량화된 동기화**: 락을 사용하지 않으므로 오버헤드가 줄어든다.
 
-### 단점
+#### 단점
 - **ABA 문제 발생 가능**: 값이 예상한 값으로 변경되었는지는 확인하지만, 변경 과정에서 다른 값으로 변했다가 다시 원래 값으로 돌아온 경우 이를 감지하지 못한다.
-- **무한 루프 가능성**: CAS 연산이 반복적으로 실패할 경우 무한 루프가 발생할 수도 있다.
+- **Spin Lock 발생**: CAS 연산이 반복적으로 실패할 경우 무한 루프가 발생할 수도 있다.
 
-## ABA 문제 해결 방법
-CAS의 한 가지 단점은 **ABA 문제**이다. 예를 들어, `A → B → A`로 값이 변한 경우 CAS는 단순히 `A`를 확인하기 때문에 값이 바뀌었는지를 감지할 수 없다. 이를 해결하기 위해 `AtomicStampedReference<T>`를 사용하면 **버전 정보(스탬프)**를 함께 관리할 수 있다.
 
-```java
-import java.util.concurrent.atomic.AtomicStampedReference;
+### ABA 문제
+ABA 문제란 CAS연산에서 공유 객체에 대한 변화를 감지하지 못할 때 발생하는 현상을말한다.
+CAS는 **값이 동일한지만 비교**하기 때문에, **중간에 값이 변경되었는지 여부는 알 수 없다.**  
+예를 들어, 아래 상황을 가정해 보자.
 
-public class ABAExample {
-    public static void main(String[] args) {
-        AtomicStampedReference<Integer> atomicStampedRef = new AtomicStampedReference<>(100, 1);
+1. 스레드 1이 `값 A`을 읽음 (`prev = A`).
+2. 스레드 B가 `A → B → A`으로 값을 변경.
+3. 스레드 A가 `compareAndSet(A, B)` 실행 → 값이 A이므로 **CAS 성공**.
 
-        int[] stampHolder = new int[1];
-        int currentValue = atomicStampedRef.get(stampHolder);
+이 경우, 값은 `A → B`로 정상적으로 변경되었지만,  **중간에 값이 변했다는 사실을 감지할 수 없다**. 이를 **ABA 문제**라고 한다.
 
-        boolean success = atomicStampedRef.compareAndSet(currentValue, 200, stampHolder[0], stampHolder[0] + 1);
 
-        System.out.println("CAS 연산 성공 여부: " + success);
-        System.out.println("현재 값: " + atomicStampedRef.getReference());
-        System.out.println("현재 스탬프: " + atomicStampedRef.getStamp());
-    }
-}
-```
-여기서 `AtomicStampedReference`는 값을 변경할 때마다 **스탬프(버전)를 증가**시키므로, 값이 같은지뿐만 아니라 변경된 이력이 있는지도 확인할 수 있다.
 
