@@ -88,7 +88,7 @@ create index i_game_1 on game(stadium_code, nation_code);
 ## cost가 중요한가? 아니!
 cubrid의 Q&A에 따르면 cost 보다는 trace를 보는 게 정확하다고 한다.
 실제로 질문도 cost이 더 높은데 정작 수행 시간은 더 길다는 내용이었다.
-![[IMG-20241107153314866.webp]]
+![[IMG-20250716225803761.webp]]
 
 실제로는 `show trace;`해서 trace를 보는 게 정확하다고 한다.
 
@@ -139,4 +139,4 @@ GROUP BY grp.schl_nm;
 차이는 조인의 순서다.
 
 gpt한테 trace 분석 해달라고 했더니 아래와 같이 답변한다.
-![[IMG-20241107153314880.webp]]
+![[IMG-20250716225803792.webp]]
