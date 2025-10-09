@@ -149,3 +149,4 @@ ConcurrentHashMap은 내부에서 동기화(synchronization)를 제공하여 여
 [자바에서 HashMap과 ConccurentHashMap의 차이](https://velog.io/@twinsgemini/%EB%8F%99%EC%8B%9C%EC%84%B1-%EC%9D%B4%EC%8A%88-HashMap-vs-ConcurrentHashMap)
 [Difference between HashMap and ConcurrentHashMap](https://www.geeksforgeeks.org/difference-hashmap-concurrenthashmap/)
 [동시성 이슈 HashMap vs ConcurrentHashMap](https://velog.io/@twinsgemini/%EB%8F%99%EC%8B%9C%EC%84%B1-%EC%9D%B4%EC%8A%88-HashMap-vs-ConcurrentHashMap)
+[ConcurrentHashMap는 어떻게 Thread-safe 한가?](https://velog.io/@alsgus92/ConcurrentHashMap%EC%9D%98-Thread-safe-%EC%9B%90%EB%A6%AC)
