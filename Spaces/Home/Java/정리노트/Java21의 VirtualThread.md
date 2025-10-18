@@ -1,0 +1,1 @@
+https://yuna-ninano.tistory.com/entry/Java21-Virtual-Threads-%EA%B0%80%EC%83%81-%EC%8A%A4%EB%A0%88%EB%93%9C%EB%9E%80
