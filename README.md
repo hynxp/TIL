@@ -16,6 +16,7 @@
 - `add:` → 새로운 파일이나 섹션 추가
 - `update:` → 기존 파일의 수정, 설명 보완, 가독성 향상 등
 - `fix:` → 버그, 오타, 잘못된 정보 수정
+- `etc` → 기타 작업들
 
 
 ## Folder Structure  
@@ -26,19 +27,23 @@
 │   └── Operating System
 │   └── Data Structure
 │   └── Software Engineering
+├── Clean Code
+├── Database
+├── Disign Pattern
+├── Docker
+├── Etc
+├── Frontend
+├── Git
 ├── HTTP
+├── JPA
 ├── JSP
 ├── Java  
 ├── JavaScript  
 ├── OOP  
-├── Clean Code  
-├── Spring  
-├── TestCode  
-├── JPA  
-├── Docker  
-└── Database  
+├── Spring
+├── System Design
+└── TestCode 
 ```
-
 
 ## Reference  
 [Sung Yun Byeon님 TIL](https://github.com/zzsza/TIL)
