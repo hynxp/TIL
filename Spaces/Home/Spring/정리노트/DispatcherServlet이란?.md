@@ -49,7 +49,7 @@ DispatcherServlet은 **HttpServlet**을 최종적으로 상속받으므로 Servl
 
 
 
-
+![[IMG-20251030095326803.png]]
 
 
 참고
